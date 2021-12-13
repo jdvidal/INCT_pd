@@ -1,4 +1,6 @@
-# INCT_pd
+# Análises espaciais com R aplicadas a dados de biodiversidade
+J.D. Vidal
+
 Tutoriais de informática da biodiversidade referentes ao processo PD INCT 2021 pela Universidade Estadual de Campinas
 
 Neste repositório eu listei as etapas de tratamento de dados geográficos e análises de biodiversidade espacial referentes a um projeto de pós-doutorado desenvolvido entre Sembro e Novembro de 2021.

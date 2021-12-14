@@ -367,12 +367,11 @@ library(&quot;flora&quot;)</code></pre>
 </div>
 <div id="setup-do-ambiente-de-trabalho-e-carregamento-dos-dados" class="section level3">
 <h3>Setup do ambiente de trabalho e carregamento dos dados</h3>
-<p>Vamos definir o diretório de trabalho, onde estarão as <em>planilhas</em> baixada do <strong>SpeciesLink</strong> e do <strong>GBIF</strong>. Para isso, usamos a função <code>set.wd()</code>.</p>
+<p>Vamos definir o diretório de trabalho, onde estará a <em>planilha</em> baixada do <strong>SpeciesLink</strong>. Para isso, usamos a função <code>set.wd()</code>.</p>
 <pre class="r"><code>setwd(&quot;/Users/jdvidal/Desktop/INCT/&quot;)</code></pre>
-<p>Vamos usar a função <code>read.xlsx()</code> e <code>read.csv()</code> para ler as planilhas.</p>
-<pre class="r"><code># SpeciesLink:
-records_splink &lt;- read.xlsx(&quot;/Users/jdvidal/Desktop/INCT/speciesLink-20210920072313-0004598.xlsx&quot;)</code></pre>
-<p>Os nomes de espécies estão listados nas coluna “scientificname” (SpeciesLink) e “species” (GBIF), então vamos excluir registros sem identificação taxonômica.</p>
+<p>Vamos usar a função <code>read.xlsx()</code> e <code>read.csv()</code> para ler a planilha.</p>
+<pre class="r"><code>records_splink &lt;- read.xlsx(&quot;/Users/jdvidal/Desktop/INCT/speciesLink-20210920072313-0004598.xlsx&quot;)</code></pre>
+<p>Os nomes de espécies estão listados nas coluna “scientificname” (SpeciesLink), então vamos excluir registros em que este campo esteja vazio, ou seja, entradas sem identificação taxonômica.</p>
 <pre class="r"><code>records_splink &lt;- records_splink[!(!is.na(records_splink$scientificname) &amp; records_splink$scientificname==&quot;&quot;), ]</code></pre>
 <p>Criamos nos dataframes os campos “genus_flora”, “specific_epithet_flora”, e “accepted_name_flora”, que vão abrigar os nomes corretos de gênero e espécie.</p>
 <pre class="r"><code>records_splink$genus_flora &lt;- NA

@@ -202,6 +202,37 @@ remove(dataset)</code></pre>
 <div id="retrieving-the-url-and-searching-for-the-range-information" class="section level3">
 <h3>Retrieving the url and searching for the range information</h3>
 <p>The following loop was written by myself and ir iterates over the dataframe to find the url for the species using the function search_powo() from the kewr package. Then, the function readLines() is used to read the html, and we use grep() to identify the lines where the range information is listed. Not all taxa include range information, so this code only works if the taxon is valid and includes range information. Otherwise, the loop will skip the non-valid taxa and look for the next one on the list.</p>
+<pre class="r"><code>i &lt;- 1
+j &lt;- 1
+
+for(i in j:nrow(ranges_spp)){
+  # First we use the API from kewr to find each species url in the Powo website
+  results &lt;- search_powo(ranges_spp[i,]$species)
+  
+  # This creates the url string to be retrieved for each species
+  url &lt;- paste0(&quot;https://powo.science.kew.org&quot;,results$results[[1]]$url)
+  
+  # This reads the html file
+  x &lt;- readLines(url)
+  
+  # Identify the line where the range is described
+  index_i &lt;- grep(&#39;Native to:&#39;,x)
+  
+  # Create a conditional to only run the rest of the code for species with range information
+  if(length(index_i)&gt;0){
+    index_j &lt;- grep(&#39;&lt;/p&gt;&#39;,x)
+    index_j &lt;- index_j[index_j&gt;index_i][1]
+    
+    # Some regular expressions to remove the html quotation and the double spaces in the code
+    res &lt;- gsub(&quot;.*&lt;p&gt;&quot;, &quot;&quot;, paste(x[index_i:index_j[1]], collapse = &#39;&#39;))
+    res &lt;- gsub(&quot;  +&quot;, &quot;&quot;, res)
+    res &lt;- gsub(&quot;&lt;/p&gt;&quot;, &quot;&quot;, res)
+
+    # Removes species characters
+    res &lt;- iconv(res, from = &#39;UTF-8&#39;, to = &#39;ASCII//TRANSLIT&#39;)
+    ranges_spp[i,]$native_range &lt;- res
+  }
+}</code></pre>
 <p>We can now inspect the results:</p>
 <pre class="r"><code>head(ranges_spp)</code></pre>
 <pre><code>##                species

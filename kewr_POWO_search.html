@@ -220,15 +220,16 @@ for(i in j:nrow(ranges_spp)){
   
   # Create a conditional to only run the rest of the code for species with range information
   if(length(index_i)&gt;0){
+   # Creates two variables to store the beginning and the end of the distribution range text
     index_j &lt;- grep(&#39;&lt;/p&gt;&#39;,x)
     index_j &lt;- index_j[index_j&gt;index_i][1]
     
-    # Some regular expressions to remove the html quotation and the double spaces in the code
+    # Some regular expressions to remove the html quotation and the extra spaces in the text
     res &lt;- gsub(&quot;.*&lt;p&gt;&quot;, &quot;&quot;, paste(x[index_i:index_j[1]], collapse = &#39;&#39;))
     res &lt;- gsub(&quot;  +&quot;, &quot;&quot;, res)
     res &lt;- gsub(&quot;&lt;/p&gt;&quot;, &quot;&quot;, res)
 
-    # Removes species characters
+    # Removes special characters
     res &lt;- iconv(res, from = &#39;UTF-8&#39;, to = &#39;ASCII//TRANSLIT&#39;)
     ranges_spp[i,]$native_range &lt;- res
   }

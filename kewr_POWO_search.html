@@ -201,7 +201,7 @@ remove(dataset)</code></pre>
 </div>
 <div id="retrieving-the-url-and-searching-for-the-range-information" class="section level3">
 <h3>Retrieving the url and searching for the range information</h3>
-<p>The following loop was written by myself and ir iterates over the dataframe to find the url for the species using the function search_powo() from the kewr package. Then, the function readLines() is used to read the html, and we use grep() to identify the lines where the range information is listed. Not all taxa include range information, so this code only works if the taxon is valid and includes range information. Otherwise, the loop will skip the non-valid taxa and look for the next one on the list.</p>
+<p>The following loop was written by myself and iterates over the dataframe to find the url for the species using the function search_powo() from the kewr package. Then, the function readLines() is used to read the html, and we use grep() to identify the lines where the range information is listed. Not all taxa include range information, so this code only works if the taxon is valid and includes range information. Otherwise, the loop will skip the non-valid taxa and look for the next one on the list.</p>
 <pre class="r"><code>i &lt;- 1
 j &lt;- 1
 

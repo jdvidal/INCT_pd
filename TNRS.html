@@ -402,6 +402,16 @@ data$species &lt;- as.factor(data$species)</code></pre>
 <p>We then create an object to store the results and set a loop to
 iterate over our date and perform the search using the function
 TNRS().</p>
+
+  <pre class="r"><code># Object to store results
+results <- data.frame()
+
+# Loop over species
+for (i in 1:nrow(data)) {
+  res <- TNRS(taxonomic_names = as.character(data$species[i]))
+  results <- rbind(results, res)
+}</code></pre>
+  
 <p>We can then finally inspect the results and the output of the
 loop.</p>
 <pre class="r"><code>head(results)</code></pre>

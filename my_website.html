@@ -143,9 +143,19 @@
       transition: width 0.3s ease;
     }
 
-    .bio a:hover::after {
-      width: 100%;
-    }
+    .bio a {
+  color: #38bdf8;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  font-weight: 600;
+  transition: text-decoration-color 0.3s ease;
+  /* Remove position: relative */
+}
+
+.bio a:hover {
+  text-decoration-color: #38bdf8;
+}
 
     /* Carousel - Updated */
     .carousel-container {

@@ -1,292 +1,1320 @@
-<!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Flora — 100 Artenkenntnis</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#fff;--ink:#3c3c3c;--mut:#777;--line:#e5e5e5;--g:#58cc02;--gd:#58a700;--b:#1cb0f6;--bd:#1899d6;--r:#ff4b4b;--rd:#ea2b2b;--y:#ffc800;--yd:#e5b400;--okbg:#d7ffb8;--okink:#46a302;--badbg:#ffdfe0;--badink:#d33131;--sel:#ddf4ff;--card:#fff}
-@media(prefers-color-scheme:dark){:root{--bg:#131f24;--ink:#e8eef0;--mut:#8fa3ad;--line:#37464f;--okbg:#1d3a0d;--okink:#8be04a;--badbg:#3d1618;--badink:#ff8a8a;--sel:#1a3a4a;--card:#1b2a31}}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,"Varela Round",ui-rounded,system-ui,sans-serif;font-weight:700}
-.view{display:none;max-width:560px;margin:0 auto}.view.on{display:block}
-button{font:inherit;color:inherit}
-.btn{border:0;border-radius:16px;padding:15px 20px;color:#fff;background:var(--g);box-shadow:0 4px 0 var(--gd);cursor:pointer;width:100%;font-weight:900;font-size:1rem;letter-spacing:.06em;text-transform:uppercase}
-.btn:active{transform:translateY(4px);box-shadow:none}.btn.red{background:var(--r);box-shadow:0 4px 0 var(--rd)}.btn.blue{background:var(--b);box-shadow:0 4px 0 var(--bd)}
-.btn:disabled{background:var(--line);color:var(--mut);box-shadow:none;cursor:default;transform:none}
-:focus-visible{outline:3px solid var(--b);outline-offset:2px}
-.lang{font:inherit;font-weight:900;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:3px 4px}.top{gap:6px;position:sticky;top:0;z-index:5;background:var(--bg);display:flex;justify-content:space-around;padding:12px 10px;border-bottom:2px solid var(--line);font-weight:900;font-size:1rem}
-.top span:nth-child(1){color:#ff9600}.top span:nth-child(2){color:var(--yd)}.top span:nth-child(3){color:var(--gd)}
-.pad{padding:16px 18px}.h1{font-size:1.6rem;font-weight:900;margin:6px 0 2px}.sub{color:var(--mut);margin:0 0 14px}
-.rev{display:flex;gap:14px;align-items:center;width:100%;text-align:left;border:2px solid var(--line);border-bottom-width:4px;border-radius:18px;background:var(--card);padding:14px;cursor:pointer}
-.rev:disabled{opacity:.55;cursor:default}.rev b{display:block;font-size:1.1rem;color:var(--b)}.rev small{color:var(--mut);font-weight:700}.rev .ic{font-size:2rem}
-.path{display:flex;flex-direction:column;align-items:center;gap:26px;padding:26px 0 120px}
-.nodew{display:flex;flex-direction:column;align-items:center;position:relative}
-.node{--rc:var(--g);position:relative;width:104px;height:104px;border-radius:50%;border:0;padding:0;cursor:pointer;background:none;display:grid;place-items:center}.node::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--rc) calc(var(--p)*1%),var(--line) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 9px),#000 calc(100% - 8px));mask:radial-gradient(farthest-side,transparent calc(100% - 9px),#000 calc(100% - 8px))}.node.m{--rc:var(--b)}.node.gold,.node.m.gold{--rc:var(--y)}
-.node i{position:relative;margin-top:-3px;width:72px;height:72px;border-radius:50%;background:var(--g);box-shadow:0 6px 0 var(--gd);display:grid;place-items:center;font-style:normal;color:#fff;font-size:1.7rem;font-weight:900}
-.node.gold i{background:var(--y);box-shadow:0 6px 0 var(--yd)}.node:active i{transform:translateY(5px);box-shadow:none}
-.nl{margin-top:12px;font-size:.85rem;color:var(--mut);text-align:center;max-width:170px}
-.go{position:absolute;top:-34px;background:var(--card);color:var(--gd);border:2px solid var(--line);border-radius:12px;padding:3px 10px;font-weight:900;font-size:.85rem;animation:fl 1.4s ease-in-out infinite}
-@keyframes fl{50%{transform:translateY(-5px)}}
-.nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:2px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:6}
-.nav div{max-width:560px;margin:auto;display:flex}.nav button{flex:1;background:none;border:0;padding:10px;font-weight:900;color:var(--mut);cursor:pointer;font-size:.95rem}.nav button.on{color:var(--b)}.nav span{display:block;font-size:1.5rem}
-#lesson.on{display:flex;flex-direction:column;height:100dvh}
-.lh{display:flex;align-items:center;gap:14px;padding:16px}.x{background:none;border:0;font-size:1.6rem;color:var(--mut);cursor:pointer}
-.bar{flex:1;height:16px;background:var(--line);border-radius:99px;overflow:hidden}.bar b{display:block;height:100%;width:0;background:var(--g);border-radius:99px;transition:width .35s;position:relative}
-.bar b:after{content:"";position:absolute;left:8px;right:8px;top:4px;height:4px;border-radius:9px;background:#fff6}
-.hp{color:var(--r);font-weight:900;font-size:1.15rem}
-.qa{flex:1;overflow:auto;padding:6px 18px 20px;display:flex;flex-direction:column;gap:16px}
-.q{font-size:1.45rem;font-weight:900}.big{font-size:1.5rem;font-weight:900;border:2px solid var(--line);border-radius:18px;padding:16px;background:var(--card)}.big small{display:block;color:var(--mut);font-size:1rem;margin-top:4px}
-.big.sci,.big em{font-style:italic}.bubble{border:2px solid var(--line);border-radius:18px;padding:16px;font-weight:700;line-height:1.5;background:var(--card)}
-.pic{flex:0 0 auto;width:min(100%,360px);max-width:360px;aspect-ratio:5/4;height:auto;min-height:0;margin:0 auto;border:2px solid var(--line);border-radius:18px;display:grid;place-items:center;overflow:hidden;background:var(--card);font-size:2.4rem}.pic img{display:block;width:100%;height:100%;min-width:0;min-height:0;object-fit:contain;object-position:center;margin:auto}.pic.photo{background:#f5f7f2}.photo-credit{font-size:.72rem;color:var(--mut);font-weight:700;text-align:right;margin-top:-10px}.photo-credit a{color:var(--mut)}
-.opts{display:grid;gap:10px}
-.opt{display:flex;gap:12px;align-items:center;text-align:left;font-size:1.1rem;font-weight:800;background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;padding:13px 14px;cursor:pointer}
-.opt kbd{font:inherit;font-size:.85rem;border:2px solid var(--line);border-radius:8px;min-width:28px;height:28px;display:grid;place-items:center;color:var(--mut)}
-.opt.i span{font-style:italic}.opt.sel{border-color:var(--b);background:var(--sel);color:var(--b)}.opt.sel kbd{border-color:var(--b);color:var(--b)}
-.opt.ok{border-color:var(--g);background:var(--okbg);color:var(--okink)}.opt.bad{border-color:var(--r);background:var(--badbg);color:var(--badink)}
-.lf{padding:14px 18px calc(14px + env(safe-area-inset-bottom));border-top:2px solid var(--line);max-height:58dvh;overflow:auto}
-.lf.ok{background:var(--okbg);border-color:transparent;color:var(--okink)}.lf.bad{background:var(--badbg);border-color:transparent;color:var(--badink)}
-.lf .btn{margin-top:12px}.fbh{font-weight:900;font-size:1.1rem}
-.lf .sci{font-size:2rem;font-weight:900;font-style:italic;line-height:1.15;margin:4px 0;animation:pop .45s}
-.lf .fam{display:inline-flex;align-items:center;gap:8px;background:hsl(var(--h,205) 62% 40%);color:#fff;border-radius:99px;padding:6px 16px;font-weight:900;font-size:1.15rem;margin:6px 0 10px;animation:pop .45s .08s both}
-.fam small{font-size:.75rem;font-weight:800;opacity:.85}
-.nm,.tip,.lf details{font-size:.98rem;line-height:1.5}.lf details{margin-top:6px}.lf summary{cursor:pointer;font-weight:900}.lf p{margin:6px 0}
-@keyframes pop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
-.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.tile{border:2px solid;border-radius:16px;padding:10px 4px;text-align:center;font-weight:900}.tile small{display:block;font-size:.72rem;margin-bottom:4px;letter-spacing:.05em}
-.t1{border-color:var(--yd);color:var(--yd)}.t2{border-color:var(--b);color:var(--b)}.t3{border-color:var(--g);color:var(--gd)}
-.rs{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:2px solid var(--line)}.rs i{font-weight:900}.rs span{color:hsl(var(--h,205) 70% 36%);font-weight:800;font-size:.9rem}
-#search{width:100%;font:inherit;font-weight:700;padding:13px 16px;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);margin-bottom:10px}
-details.dr{border-bottom:2px solid var(--line);border-left:6px solid hsl(var(--h,205) 62% 45%);padding:10px 0 10px 12px}details.dr summary{display:flex;justify-content:space-between;gap:8px;cursor:pointer;align-items:center}
-.dr b{font-style:italic;font-size:1.05rem}.dr .f{color:hsl(var(--h,205) 70% 36%);font-size:.85rem;font-weight:900}.dr .d{font-size:.8rem;color:var(--y);letter-spacing:1px}.dr p{margin:6px 0;line-height:1.5;font-size:.95rem}
-.node.m i{background:var(--b);box-shadow:0 6px 0 var(--bd)}.node.m.gold i{background:var(--y);box-shadow:0 6px 0 var(--yd)}
-.unit{align-self:stretch;background:var(--g);color:#fff;border-radius:16px;padding:12px 16px;font-weight:900;box-shadow:0 4px 0 var(--gd)}.unit.b{background:var(--b);box-shadow:0 4px 0 var(--bd)}.pic svg{width:100%;height:100%}
-.modal{position:fixed;inset:0;background:#0009;display:grid;align-items:end;justify-items:center;z-index:20}.modal[hidden]{display:none}.mc{background:var(--bg);width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:24px 18px calc(18px + env(safe-area-inset-bottom));display:grid;gap:12px}.mt{font-weight:900;font-size:1.25rem;text-align:center;margin-bottom:6px}.btn.out{background:var(--card);color:var(--rd);border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
-@media(prefers-color-scheme:dark){.dr .f,.rs span{color:hsl(var(--h,205) 75% 70%)}}
-.dot{width:14px;height:14px;border-radius:50%;flex:none;background:hsl(var(--h,205) 62% 45%)}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style></head><body>
-<div class="view on" id="home"><div class="top" id="stats"></div><div class="pad"><div class="h1" data-t="title"></div><p class="sub" data-t="sub"></p><button class="rev" id="revb"></button><div class="path" id="path"></div></div></div>
-<div class="view" id="dict"><div class="top" id="stats2"></div><div class="pad" style="padding-bottom:110px"><input id="search" type="search"><div id="dl"></div></div></div>
-<div class="view" id="lesson"><div class="lh"><button class="x" id="quit" aria-label="Sair">✕</button><div class="bar"><b id="pb"></b></div><div class="hp" id="hp"></div></div><div class="qa" id="qa"></div><div class="lf" id="foot"></div></div>
-<div class="view" id="res"><div class="pad" style="text-align:center;padding-top:40px"><div style="font-size:4rem" id="rE"></div><div class="h1" id="rT"></div><p class="sub" id="rS"></p><div class="tiles" id="rTi"></div><div id="rL" style="text-align:left"></div><button class="btn" id="rB" data-t="cont" style="margin:20px 0 40px"></button></div></div>
-<div class="modal" id="qm" hidden role="dialog" aria-modal="true"><div class="mc"><div class="mt" data-t="quit"></div><button class="btn" id="qk" data-t="qk"></button><button class="btn out" id="qe" data-t="qe"></button></div></div>
-<nav class="nav" id="nav"><div><button data-v="home" class="on"><span>🌱</span><i data-t="learn" style="font-style:normal"></i></button><button data-v="dict"><span>📖</span><i data-t="dict" style="font-style:normal"></i></button></div></nav>
-<script>
-const DATA=[{"n":1,"species":"Sambucus nigra","family":"Adoxaceae","exam":"Fruchttyp; Standort","diagnostic":"Arbusto; folhas opostas pinadas, flores brancas em corimbos, frutos negros. Fruto drupáceo; sebes e solos ricos.","memory":"Flores brancas em pratos, depois frutos negros.","genus":"Sambucus","common_de":"Schwarzer Holunder","common_pt":"Sabugueiro-negro"},{"n":2,"species":"Galanthus nivalis","family":"Amaryllidaceae","exam":"Fruchtknotenstellung; Speicherorgan","diagnostic":"Flor branca pendente, 3 tépalas externas longas e 3 internas menores. Ovário ínfero; bulbo.","memory":"Pequena flor branca de fim de inverno.","genus":"Galanthus","common_de":"Kleines Schneeglöckchen","common_pt":"Galanthus / campainha-de-inverno"},{"n":3,"species":"Allium ursinum","family":"Amaryllidaceae","exam":"Blütenstand; Fruchttyp","diagnostic":"Folhas largas com cheiro de alho; flores brancas em umbela; cápsula.","memory":"Cheiro de alho; cuidado com folhas parecidas de espécies tóxicas.","genus":"Allium","common_de":"Bärlauch","common_pt":"Alho-dos-ursos"},{"n":4,"species":"Daucus carota","family":"Apiaceae","exam":"Fruchttyp; Lebensalter","diagnostic":"Folhas divididas, umbela composta branca, frutos espinhosos. Esquizocarpo; geralmente bienal.","memory":"Umbela branca e frutos espinhosos.","genus":"Daucus","common_de":"Wilde Möhre","common_pt":"Cenoura-brava"},{"n":5,"species":"Heracleum sphondylium","family":"Apiaceae","exam":"Blütenstand; Fruchttyp","diagnostic":"Planta robusta, folhas grandes lobadas, umbelas compostas; fruto em dois mericarpos.","memory":"Uma Apiaceae grande e robusta.","genus":"Heracleum","common_de":"Wiesen-Bärenklau","common_pt":"Bérula / Heracleum-comum"},{"n":6,"species":"Arum maculatum","family":"Araceae","exam":"Blütenstand; Nervatur","diagnostic":"Espádice dentro de espata; folhas sagitadas, às vezes manchadas; nervação reticulada.","memory":"Uma tocha floral dentro de uma capa; tóxica.","genus":"Arum","common_de":"Gefleckter Aronstab","common_pt":"Jarro-dos-campos"},{"n":7,"species":"Hedera helix","family":"Araliaceae","exam":"Wuchsform; Fruchttyp","diagnostic":"Trepadeira lenhosa com raízes de fixação; folhas juvenis lobadas; frutos negros tipo drupa.","memory":"A hera muda a forma das folhas conforme o ramo.","genus":"Hedera","common_de":"Gemeiner Efeu","common_pt":"Hera-comum"},{"n":8,"species":"Convallaria majalis","family":"Asparagaceae","exam":"Blütenstand; Wuchs-/Lebensform","diagnostic":"Geralmente duas folhas basais; flores brancas pendentes em racemo unilateral; geófita rizomatosa.","memory":"Sininhos brancos num lado do eixo; tóxica.","genus":"Convallaria","common_de":"Maiglöckchen","common_pt":"Lírio-do-vale"},{"n":9,"species":"Achillea millefolium","family":"Asteraceae","exam":"Laubblattform; Blütenstand","diagnostic":"Folhas muito finamente divididas; capítulos brancos/rosados em corimbo.","memory":"“Mil-folhas” descreve a folhagem.","genus":"Achillea","common_de":"Gewöhnliche Schafgarbe","common_pt":"Milefólio / mil-folhas"},{"n":10,"species":"Artemisia vulgaris","family":"Asteraceae","exam":"Bestäubungstyp; Verwendung","diagnostic":"Folhas lobadas, face inferior clara; capítulos discretos. Predominantemente vento; uso tradicional aromático.","memory":"Folhagem recortada e face inferior clara.","genus":"Artemisia","common_de":"Gewöhnlicher Beifuß","common_pt":"Artemísia-comum"},{"n":11,"species":"Arctium lappa","family":"Asteraceae","exam":"Involukralblätter; Standort","diagnostic":"Folhas enormes cordadas; brácteas do capítulo com ganchos; locais perturbados ricos em nutrientes.","memory":"Carrapichos que grudam na roupa.","genus":"Arctium","common_de":"Große Klette","common_pt":"Bardana-maior"},{"n":12,"species":"Bellis perennis","family":"Asteraceae","exam":"Lebensform; Standort","diagnostic":"Roseta basal; centro amarelo e flores marginais brancas. Perene; relvados e prados cortados.","memory":"Margarida pequena de gramado.","genus":"Bellis","common_de":"Gänseblümchen","common_pt":"Margarida-comum"},{"n":13,"species":"Centaurea jacea","family":"Asteraceae","exam":"Blütendifferenzierung; Standort","diagnostic":"Capítulos púrpura; flores marginais vistosas; brácteas com apêndices castanhos; prados.","memory":"Botão púrpura sem lígulas longas.","genus":"Centaurea","common_de":"Wiesen-Flockenblume","common_pt":"Centáurea-dos-prados"},{"n":14,"species":"Cirsium vulgare","family":"Asteraceae","exam":"Laubblattform; Lebensalter","diagnostic":"Folhas profundamente lobadas e espinhosas; caule alado espinhoso; geralmente bienal.","memory":"Espinhos por toda a planta.","genus":"Cirsium","common_de":"Gewöhnliche Kratzdistel","common_pt":"Cardo-rasteiro"},{"n":15,"species":"Matricaria chamomilla","family":"Asteraceae","exam":"Standort; Inhaltsstoffe","diagnostic":"Folhas finas; capítulo branco/amarelo; receptáculo cônico oco. Solos agrícolas; óleo essencial com bisabolol/camazuleno.","memory":"Camomila verdadeira: receptáculo oco.","genus":"Matricaria","common_de":"Echte Kamille","common_pt":"Camomila-verdadeira"},{"n":16,"species":"Tanacetum vulgare","family":"Asteraceae","exam":"Blütentyp; Fruchttyp","diagnostic":"Folhas pinadas aromáticas; capítulos amarelos em botão sem lígulas; cipsela.","memory":"Muitos botões amarelos; cuidado com toxicidade.","genus":"Tanacetum","common_de":"Rainfarn","common_pt":"Tanaceto / erva-de-São-Marcos"},{"n":17,"species":"Taraxacum officinale s.l.","family":"Asteraceae","exam":"Laubblattform; Wurzeltyp","diagnostic":"Roseta de folhas lobadas; capítulo amarelo solitário em escapo oco; raiz pivotante.","memory":"Dente-de-leão e esfera branca de sementes.","genus":"Taraxacum","common_de":"Gewöhnlicher Löwenzahn","common_pt":"Dente-de-leão"},{"n":18,"species":"Tussilago farfara","family":"Asteraceae","exam":"Blütezeit; Verwendung","diagnostic":"Flores amarelas antes das folhas; folhas posteriores grandes e cordadas. Floração precoce; uso tradicional para tosse.","memory":"Primeiro a flor, depois a folha enorme.","genus":"Tussilago","common_de":"Huflattich","common_pt":"Unha-de-cavalo"},{"n":19,"species":"Impatiens parviflora","family":"Balsaminaceae","exam":"Lebensalter; Indigenat","diagnostic":"Flores amarelo-pálidas com esporão; cápsulas explosivas. Anual; neófito naturalizado.","memory":"A cápsula “impaciente” lança sementes.","genus":"Impatiens","common_de":"Kleines Springkraut","common_pt":"Impatiens-de-flor-pequena"},{"n":20,"species":"Berberis vulgaris","family":"Berberidaceae","exam":"Wuchsform; Blattgrund","diagnostic":"Arbusto espinhoso; folhas em fascículos; flores amarelas, frutos vermelhos.","memory":"Espinhos e bagas vermelhas.","genus":"Berberis","common_de":"Berberitze / Sauerdorn","common_pt":"Berberis / uva-espim"},{"n":21,"species":"Mahonia aquifolium","family":"Berberidaceae","exam":"Laubblattform; Indigenat","diagnostic":"Folhas compostas pinadas, folíolos coriáceos com margens espinhosas; espécie introduzida.","memory":"Parece azevinho, mas a folha é composta.","genus":"Mahonia","common_de":"Mahonie","common_pt":"Mahónia"},{"n":22,"species":"Alnus glutinosa","family":"Betulaceae","exam":"Standort; Geschlechtsverteilung","diagnostic":"Folhas arredondadas com ápice entalhado; cones lenhosos; zonas alagadas; monoica.","memory":"Amieiro de solos encharcados com cones.","genus":"Alnus","common_de":"Schwarzerle","common_pt":"Amieiro-negro"},{"n":23,"species":"Betula pendula","family":"Betulaceae","exam":"Blütenstand; Fruchttyp","diagnostic":"Casca branca descamante; folhas triangulares serradas; amentilhos; núculas aladas.","memory":"Tronco branco e sementes aladas.","genus":"Betula","common_de":"Hängebirke","common_pt":"Vidoeiro-pendente"},{"n":24,"species":"Carpinus betulus","family":"Betulaceae","exam":"Laubblattform; Fruchttyp","diagnostic":"Folhas com nervuras vincadas e margem duplamente serrada; fruto com bráctea trilobada.","memory":"Parece faia, mas tem nervuras e serras fortes.","genus":"Carpinus","common_de":"Hainbuche","common_pt":"Carpino-europeu"},{"n":25,"species":"Corylus avellana","family":"Betulaceae","exam":"Wuchsform; Blütenstand","diagnostic":"Arbusto de folhas arredondadas e cordadas; amentilhos masculinos; avelãs.","memory":"Avelãs e amentilhos amarelos.","genus":"Corylus","common_de":"Hasel / Haselnuss","common_pt":"Avelaneira"},{"n":26,"species":"Echium vulgare","family":"Boraginaceae","exam":"Epidermalanhänge; Blütenstand","diagnostic":"Pelos rígidos e ásperos; flores rosadas que ficam azuis; inflorescência enrolada.","memory":"Flores azuis e caule eriçado.","genus":"Echium","common_de":"Gewöhnlicher Natternkopf","common_pt":"Viperina-comum"},{"n":27,"species":"Myosotis arvensis","family":"Boraginaceae","exam":"Kronenform; Fruchttyp","diagnostic":"Flores azuis minúsculas; corola com cinco lobos; fruto dividido em quatro núculas.","memory":"Miosótis azul; fruto com quatro partes.","genus":"Myosotis","common_de":"Acker-Vergissmeinnicht","common_pt":"Miosótis-dos-campos"},{"n":28,"species":"Pulmonaria officinalis","family":"Boraginaceae","exam":"Kronblattfärbung; Blütensymmetrie","diagnostic":"Folhas manchadas; flores rosa que ficam azul-violeta; corola actinomorfa.","memory":"Manchas como pulmões, flores rosa e azuis.","genus":"Pulmonaria","common_de":"Echtes Lungenkraut","common_pt":"Pulmonária"},{"n":29,"species":"Alliaria petiolata","family":"Brassicaceae","exam":"Fruchttyp; Standort","diagnostic":"Folhas com cheiro de alho; flores com quatro pétalas em cruz; síliqua; sebes.","memory":"Cheira a alho, mas tem flor de Brassicaceae.","genus":"Alliaria","common_de":"Knoblauchsrauke","common_pt":"Aliária / erva-alheira"},{"n":30,"species":"Capsella bursa-pastoris","family":"Brassicaceae","exam":"Fruchtform; Lebensalter","diagnostic":"Roseta basal; flores brancas; frutos triangulares em coração. Silícula; anual/bienal.","memory":"Fruto como uma pequena bolsa.","genus":"Capsella","common_de":"Hirtentäschel","common_pt":"Bolsa-de-pastor"},{"n":31,"species":"Campanula rotundifolia","family":"Campanulaceae","exam":"Fruchtknotenstellung; Standort","diagnostic":"Flores azuis em sino; folhas basais redondas, caulinares estreitas; ovário ínfero.","memory":"Folhas basais redondas e flores em sino.","genus":"Campanula","common_de":"Rundblättrige Glockenblume","common_pt":"Campânula-de-folha-redonda"},{"n":32,"species":"Humulus lupulus","family":"Cannabaceae","exam":"Geschlechtsverteilung; Wuchsform","diagnostic":"Trepadeira; folhas opostas lobadas; cones nas plantas femininas. Dioica, perene.","memory":"Lúpulo = cerveja e cones femininos.","genus":"Humulus","common_de":"Hopfen","common_pt":"Lúpulo"},{"n":33,"species":"Symphoricarpos albus","family":"Caprifoliaceae","exam":"Fruchtknotenstellung; Verwendung","diagnostic":"Arbusto com folhas opostas e bagas brancas; ovário ínfero; ornamental.","memory":"Bagas como bolas de neve.","genus":"Symphoricarpos","common_de":"Gewöhnliche Schneebeere","common_pt":"Sinforina / pérolas-brancas"},{"n":34,"species":"Valeriana officinalis","family":"Caprifoliaceae","exam":"Blütensymmetrie; Fruchttyp","diagnostic":"Folhas pinadas; flores claras em grupos; flores geralmente zigomorfas; fruto seco com papilho.","memory":"Valeriana: folhas divididas e flores claras.","genus":"Valeriana","common_de":"Echter Baldrian","common_pt":"Valeriana-comum"},{"n":35,"species":"Dianthus armeria (Beispiel)","family":"Caryophyllaceae","exam":"Laubblattform; Fruchttyp","diagnostic":"Folhas estreitas opostas; flores rosadas manchadas; cápsula; pétalas dentadas.","memory":"Cravo: cinco pétalas recortadas.","genus":"Dianthus","common_de":"Felsennelke (Beispiel)","common_pt":"Cravina (exemplo)"},{"n":36,"species":"Stellaria media","family":"Caryophyllaceae","exam":"Blütezeit; Standort","diagnostic":"Cinco pétalas brancas fendidas parecem dez; linha de pelos no caule; floresce grande parte do ano.","memory":"Cinco pétalas parecem dez; linha de pelos.","genus":"Stellaria","common_de":"Vogelmiere","common_pt":"Morugem-branca"},{"n":37,"species":"Chenopodium album","family":"Chenopodiaceae","exam":"Bestäubungstyp; Fruchttyp","diagnostic":"Folhas jovens por vezes farináceas; flores verdes; polinização pelo vento; fruto com uma semente.","memory":"Folhas jovens parecem polvilhadas de farinha.","genus":"Chenopodium","common_de":"Weißer Gänsefuß","common_pt":"Ançarinha-branca"},{"n":38,"species":"Convolvulus arvensis","family":"Convolvulaceae","exam":"Wuchsform; Fruchttyp","diagnostic":"Caules volúveis; folhas sagitadas; flores em funil; perene com rizomas; cápsula.","memory":"Pequenas trombetas que se enrolam.","genus":"Convolvulus","common_de":"Acker-Winde","common_pt":"Corriola-dos-campos"},{"n":39,"species":"Juniperus communis","family":"Cupressaceae","exam":"Wuchsform; Zapfen","diagnostic":"Arbusto/conífera; agulhas em grupos de três com faixa branca; cone feminino carnudo azul-negro.","memory":"Bagas azul-negras em ramos espinhosos.","genus":"Juniperus","common_de":"Gemeiner Wacholder","common_pt":"Zimbro-comum"},{"n":40,"species":"Carex flacca (Beispiel)","family":"Cyperaceae","exam":"Blütenstand; Stängelquerschnitt","diagnostic":"Folhas em três fileiras; caule triangular; espigas, por vezes sexos separados.","memory":"Cárice: lembre-se das três arestas.","genus":"Carex","common_de":"Blaugrüne Segge (Beispiel)","common_pt":"Carex azulada (exemplo)"},{"n":41,"species":"Equisetum arvense","family":"Equisetaceae","exam":"Lebensform; Laubblattstellung","diagnostic":"Caules articulados; folhas reduzidas em bainhas nos nós; ramos verticilados; perene rizomatosa.","memory":"Caule segmentado como cana.","genus":"Equisetum","common_de":"Ackerschachtelhalm","common_pt":"Cavalinha-dos-campos"},{"n":42,"species":"Calluna vulgaris","family":"Ericaceae","exam":"Wuchsform; Kelch","diagnostic":"Arbusto anão com folhas em escamas opostas; flores púrpuras; cálice petaloide.","memory":"Tapete púrpura de solo ácido.","genus":"Calluna","common_de":"Besenheide","common_pt":"Queiró / urze"},{"n":43,"species":"Euphorbia cyparissias","family":"Euphorbiaceae","exam":"Blütenstand; Fruchttyp","diagnostic":"Folhas estreitas como agulhas; ciátio; cápsula geralmente trilobada.","memory":"Pequeno cipreste herbáceo; látex irritante.","genus":"Euphorbia","common_de":"Zypressen-Wolfsmilch","common_pt":"Eufórbia-cipreste"},{"n":44,"species":"Lotus corniculatus","family":"Fabaceae","exam":"Laubblattform; Fruchttyp","diagnostic":"Três folíolos e duas estípulas aparentes; flores amarelas; legume estreito.","memory":"“Cinco folhas” = três folíolos + duas estípulas.","genus":"Lotus","common_de":"Gewöhnlicher Hornklee","common_pt":"Cornichão"},{"n":45,"species":"Robinia pseudoacacia","family":"Fabaceae","exam":"Blütenstand; Indigenat","diagnostic":"Folhas pinadas; flores brancas perfumadas em racemos pendentes; introduzida da América do Norte.","memory":"Falsa-acácia com cachos brancos pendentes.","genus":"Robinia","common_de":"Robinie / Scheinakazie","common_pt":"Robínia / falsa-acácia"},{"n":46,"species":"Trifolium repens","family":"Fabaceae","exam":"Laubblattform; Lebensform","diagnostic":"Três folíolos com marca clara; caules rastejantes enraízam; perene estolonífera.","memory":"repens = rastejante.","genus":"Trifolium","common_de":"Weißklee","common_pt":"Trevo-branco"},{"n":47,"species":"Vicia sepium","family":"Fabaceae","exam":"Blattspitze; Lebensalter","diagnostic":"Folhas pinadas terminam em gavinha; flores púrpuras; herbácea perene.","memory":"Gavinhas agarram suportes.","genus":"Vicia","common_de":"Zaun-Wicke","common_pt":"Ervilhaca-dos-sebes"},{"n":48,"species":"Fagus sylvatica","family":"Fagaceae","exam":"Laubblattform; Fruchttyp","diagnostic":"Folhas ovadas onduladas; casca lisa cinzenta; cúpula espinhosa com geralmente duas faias.","memory":"Faia: casca lisa, folhas onduladas, frutos triangulares.","genus":"Fagus","common_de":"Rotbuche","common_pt":"Faia-europeia"},{"n":49,"species":"Quercus petraea","family":"Fagaceae","exam":"Standort; Fruchtverbreitung","diagnostic":"Folha com base cuneada e pecíolo mais longo; bolotas quase sésseis; solos drenados.","memory":"Carvalho-séssil: bolotas sem cabo longo.","genus":"Quercus","common_de":"Traubeneiche","common_pt":"Carvalho-séssil"},{"n":50,"species":"Quercus robur","family":"Fagaceae","exam":"Bestäubungstyp; Verwendung","diagnostic":"Folha com pecíolo curto e base auriculada; bolotas em pedúnculos longos; polinização pelo vento.","memory":"Carvalho-alvarinho: bolotas em cabos longos.","genus":"Quercus","common_de":"Stieleiche","common_pt":"Carvalho-alvarinho"},{"n":51,"species":"Geranium robertianum","family":"Geraniaceae","exam":"Laubblattform; Fruchttyp","diagnostic":"Folhas palmado-divididas; caules avermelhados; fruto com bico, esquizocarpo de cinco mericarpos.","memory":"Fruto como bico de grou.","genus":"Geranium","common_de":"Ruprechtskraut","common_pt":"Erva-de-São-Roberto"},{"n":52,"species":"Hypericum perforatum","family":"Hypericaceae","exam":"Fruchttyp; Verwendung","diagnostic":"Folhas opostas com pontos translúcidos; flores amarelas; cápsula; uso tradicional medicinal e interações medicamentosas.","memory":"Pontos parecem furos quando a folha é vista contra a luz.","genus":"Hypericum","common_de":"Echtes Johanniskraut","common_pt":"Hipericão-perfurado"},{"n":53,"species":"Iris pseudacorus","family":"Iridaceae","exam":"Blumentyp; Standort","diagnostic":"Folhas em espada; flores amarelas grandes; estrutura floral adaptada a insetos; zonas húmidas.","memory":"Espada amarela junto à água.","genus":"Iris","common_de":"Gelbe Schwertlilie","common_pt":"Íris-amarela"},{"n":54,"species":"Glechoma hederacea","family":"Lamiaceae","exam":"Stängelquerschnitt; Laubblattform","diagnostic":"Caules rastejantes quadrangulares; folhas opostas arredondadas e crenadas; flores violetas bilabiadas.","memory":"Hera-terrestre, mas Lamiaceae aromática.","genus":"Glechoma","common_de":" Gundermann / Gundelrebe","common_pt":"Hera-terrestre"},{"n":55,"species":"Lamium maculatum","family":"Lamiaceae","exam":"Blütenstand; Standort","diagnostic":"Folhas opostas frequentemente prateadas; flores bilabiadas em verticilastros; sombra e sebes.","memory":"Parece urtiga, mas não pica.","genus":"Lamium","common_de":"Gefleckte Taubnessel","common_pt":"Lâmio-manchado"},{"n":56,"species":"Tulipa gesneriana (Beispiel)","family":"Liliaceae","exam":"Fruchtknotenstellung; Laubblattstellung","diagnostic":"Seis tépalas; folhas largas com nervação paralela; ovário súpero; folhas alternas.","memory":"Seis tépalas e bulbo.","genus":"Tulipa","common_de":"Garten-Tulpe (Beispiel)","common_pt":"Tulipa-de-jardim (exemplo)"},{"n":57,"species":"Magnolia × soulangeana (Beispiel)","family":"Magnoliaceae","exam":"Gynoeceum; Blütensymmetrie","diagnostic":"Flores grandes antes das folhas; numerosos carpelos livres; flor actinomorfa.","memory":"Muitas peças florais dispostas em espiral.","genus":"Magnolia","common_de":"Tulpen-Magnolie (Beispiel)","common_pt":"Magnólia-de-Soulange (exemplo)"},{"n":58,"species":"Malva sylvestris","family":"Malvaceae","exam":"Androeceum; Fruchttyp","diagnostic":"Folhas palmadas; flores rosadas com nervuras escuras; filetes unidos num tubo; esquizocarpo.","memory":"Fruto como roda de queijo.","genus":"Malva","common_de":"Wilde Malve","common_pt":"Malva-silvestre"},{"n":59,"species":"Tilia cordata","family":"Malvaceae (trad. Tiliaceae)","exam":"Diaspore; Verwendung","diagnostic":"Folhas cordadas; pelos castanho-avermelhados nas axilas das nervuras; fruto associado a bráctea alada; árvore de sombra.","memory":"A bráctea é uma asa para dispersão.","genus":"Tilia","common_de":"Winter-Linde","common_pt":"Tília-de-folhas-pequenas"},{"n":60,"species":"Forsythia × intermedia","family":"Oleaceae","exam":"Blütensymmetrie; Blütezeit","diagnostic":"Flores amarelas de quatro lóbulos antes das folhas; corola actinomorfa; floresce cedo na primavera.","memory":"Ramos nus cobertos de amarelo.","genus":"Forsythia","common_de":"Forsythie","common_pt":"Forsítia"},{"n":61,"species":"Fraxinus excelsior","family":"Oleaceae","exam":"Geschlechtsverteilung; Laubblattform","diagnostic":"Folhas compostas pinadas com folíolos serrados; gemas negras; sistema sexual variável/polígamo.","memory":"Gemas pretas no inverno.","genus":"Fraxinus","common_de":"Gemeine Esche","common_pt":"Freixo-europeu"},{"n":62,"species":"Ligustrum vulgare","family":"Oleaceae","exam":"Wuchsform; Fruchttyp","diagnostic":"Arbusto de folhas opostas; flores brancas em panículas; frutos negros tipo baga.","memory":"Flores brancas, bagas pretas.","genus":"Ligustrum","common_de":"Gewöhnlicher Liguster","common_pt":"Alfeneiro-comum"},{"n":63,"species":"Chelidonium majus","family":"Papaveraceae","exam":"Zahl der Petalen; Verwendung","diagnostic":"Quatro pétalas amarelas; folhas lobadas; látex alaranjado; uso tradicional contra verrugas não recomendado.","memory":"Quatro pétalas e látex laranja.","genus":"Chelidonium","common_de":"Schöllkraut","common_pt":"Celidónia-maior"},{"n":64,"species":"Papaver rhoeas","family":"Papaveraceae","exam":"Perianth-Typ; Standort","diagnostic":"Quatro pétalas vermelhas; duas sépalas caem na abertura; cápsula; campos revolvidos.","memory":"Papoila vermelha e botão pendente.","genus":"Papaver","common_de":"Klatschmohn","common_pt":"Papoila-comum"},{"n":65,"species":"Corydalis cava","family":"Papaveraceae (trad. Fumariaceae)","exam":"Blütensymmetrie; Lebensform","diagnostic":"Flores com esporão, rosadas/púrpuras/brancas; folhas divididas; tubérculo oco; geófita.","memory":"cava = oca.","genus":"Corydalis","common_de":"Hohlknolliger Lerchensporn","common_pt":"Corydalis-oca"},{"n":66,"species":"Larix decidua","family":"Pinaceae","exam":"Nadelalter; Indigenat","diagnostic":"Agulhas macias em grupos, amarelam e caem no inverno; nativa das montanhas europeias.","memory":"Conífera que perde as agulhas.","genus":"Larix","common_de":"Europäische Lärche","common_pt":"Larício-europeu"},{"n":67,"species":"Pinus sylvestris","family":"Pinaceae","exam":"Nadelalter; Zapfenform","diagnostic":"Agulhas aos pares; casca alaranjada no alto do tronco; cones pequenos lenhosos; agulhas duram vários anos.","memory":"Duas agulhas por fascículo e casca laranja.","genus":"Pinus","common_de":"Waldkiefer","common_pt":"Pinheiro-silvestre"},{"n":68,"species":"Plantago lanceolata","family":"Plantaginaceae","exam":"Laubblattform; Blütenstand","diagnostic":"Roseta de folhas lanceoladas com nervuras longitudinais; espiga cilíndrica.","memory":"Nervuras como cordas na folha.","genus":"Plantago","common_de":"Spitzwegerich","common_pt":"Tanchagem-menor"},{"n":69,"species":"Digitalis purpurea","family":"Plantaginaceae","exam":"Blütensymmetrie; Verwendung","diagnostic":"Flores tubulares púrpuras com manchas internas em espiga; corola zigomorfa; fonte histórica de cardiotónicos; tóxica.","memory":"Flores como dedais.","genus":"Digitalis","common_de":"Roter Fingerhut","common_pt":"Dedaleira-púrpura"},{"n":70,"species":"Veronica chamaedrys","family":"Plantaginaceae","exam":"Stamina-Zahl; Fruchttyp","diagnostic":"Flores azuis de quatro lóbulos; caule com duas linhas de pelos; dois estames; cápsula.","memory":"Quatro lóbulos, dois estames.","genus":"Veronica","common_de":"Gamander-Ehrenpreis","common_pt":"Verónica-de-folhas-de-germandro"},{"n":71,"species":"Platanus × hispanica","family":"Platanaceae","exam":"Laubblattform; Fruchttyp","diagnostic":"Folhas palmado-lobadas; casca descamante manchada; bolas de frutos pendentes.","memory":"Tronco camuflado e bolas pendentes.","genus":"Platanus","common_de":"Ahornblättrige Platane","common_pt":"Plátano-de-folha-de-ácer"},{"n":72,"species":"Elymus repens","family":"Poaceae","exam":"Synfloreszenz; Laubblattstellung","diagnostic":"Gramínea rizomatosa; espiguetas sésseis alternadas numa espiga; folhas alternas com aurículas.","memory":"Espiguetas encostadas ao eixo; rizomas longos.","genus":"Elymus","common_de":"Kriech-Quecke","common_pt":"Grama-francesa / grama-das-roças"},{"n":73,"species":"Dactylis glomerata","family":"Poaceae","exam":"Blattscheide; Standort","diagnostic":"Panícula com grupos densos de espiguetas; folhas largas e bainhas comprimidas; prados/pastagens.","memory":"Inflorescência em pequenos grupos densos.","genus":"Dactylis","common_de":"Wiesen-Knäuelgras","common_pt":"Dáctilo-dos-prados"},{"n":74,"species":"Lolium perenne","family":"Poaceae","exam":"Blütenzahl im Ährchen; Verwendung","diagnostic":"Espiga estreita com espiguetas alternadas inseridas de lado; espiguetas multifloras; forragem e relvados.","memory":"Dentes alternados ao longo da espiga.","genus":"Lolium","common_de":"Deutsches Weidelgras","common_pt":"Azevém-perene"},{"n":75,"species":"Poa annua","family":"Poaceae","exam":"Blütezeit; Standort","diagnostic":"Pequena gramínea com panícula aberta; floresce quase o ano todo; pavimentos, solos compactados e relvados.","memory":"Poa anual nas fendas do pavimento.","genus":"Poa","common_de":"Einjähriges Rispengras","common_pt":"Poa-anual"},{"n":76,"species":"Fallopia japonica","family":"Polygonaceae","exam":"Wuchsform; Ausbreitung","diagnostic":"Caules altos ocos e nodosos; folhas grandes; perene rizomatosa, espalha-se por fragmentos de rizoma/caule.","memory":"Parece bambu, mas é Polygonaceae invasora.","genus":"Fallopia","common_de":"Japanischer Staudenknöterich","common_pt":"Fallopia-japonesa"},{"n":77,"species":"Rumex acetosa","family":"Polygonaceae","exam":"Geschlechtsverteilung; Sekundärstoff","diagnostic":"Folhas com lobos basais em forma de flecha; inflorescência avermelhada; geralmente dioica; ácido oxálico/oxalatos.","memory":"Folha-flecha e sabor ácido.","genus":"Rumex","common_de":"Wiesen-Sauerampfer","common_pt":"Azedas-dos-prados"},{"n":78,"species":"Primula veris","family":"Primulaceae","exam":"Kronenform; Fruchttyp","diagnostic":"Flores amarelas em umbela unilateral; corola tubular com manchas alaranjadas; cápsula.","memory":"Amarelo + manchas laranja + umbela.","genus":"Primula","common_de":"Wiesen-Schlüsselblume","common_pt":"Prímula-dos-prados"},{"n":79,"species":"Anemone nemorosa","family":"Ranunculaceae","exam":"Perianth-Typ; Lebensform","diagnostic":"Flor branca solitária; três brácteas folhosas divididas; tépalas; geófita rizomatosa.","memory":"Flor branca primaveril no bosque.","genus":"Anemone","common_de":"Busch-Windröschen","common_pt":"Anémona-dos-bosques"},{"n":80,"species":"Clematis vitalba","family":"Ranunculaceae","exam":"Laubblattform; Wuchsform","diagnostic":"Trepadeira lenhosa; folhas opostas compostas; frutos com estilos plumosos.","memory":"Frutos como barbas brancas.","genus":"Clematis","common_de":"Gemeine Waldrebe","common_pt":"Clemátide-branca"},{"n":81,"species":"Ficaria verna","family":"Ranunculaceae","exam":"Perianth-Typ; Gynoeceum","diagnostic":"Folhas brilhantes cordadas/reniformes; flores amarelas com tépalas; numerosos carpelos livres.","memory":"Estrela amarela com folhas lustrosas.","genus":"Ficaria","common_de":"Scharbockskraut","common_pt":"Ficária"},{"n":82,"species":"Crataegus monogyna","family":"Rosaceae","exam":"Fruchttyp; Verwendung","diagnostic":"Ramos espinhosos; folhas lobadas; flores brancas em corimbo; frutos vermelhos tipo pomo.","memory":"Lobos + espinhos + frutos vermelhos.","genus":"Crataegus","common_de":"Eingriffeliger Weißdorn","common_pt":"Pilriteiro-de-um-estilete"},{"n":83,"species":"Fragaria vesca","family":"Rosaceae","exam":"Laubblattform; Fruchttyp","diagnostic":"Folhas com três folíolos serrados; flores brancas; aquénios sobre receptáculo carnudo.","memory":"Os pontos do morango são os frutos verdadeiros.","genus":"Fragaria","common_de":"Wald-Erdbeere","common_pt":"Morangueiro-silvestre"},{"n":84,"species":"Geum urbanum","family":"Rosaceae","exam":"Laubblattstellung; Standort","diagnostic":"Folhas alternas com folíolo terminal maior; flores amarelas; frutos com ganchos; locais sombreados ricos.","memory":"Frutos prendem-se à roupa.","genus":"Geum","common_de":"Echte Nelkenwurz","common_pt":"Erva-benta"},{"n":85,"species":"Malus domestica","family":"Rosaceae","exam":"Fruchtknotenstellung; Indigenat","diagnostic":"Folhas alternas serradas; flores brancas/rosadas; fruto pomo; espécie cultivada.","memory":"Maçã é pomo, não baga.","genus":"Malus","common_de":"Kulturapfel","common_pt":"Macieira"},{"n":86,"species":"Rosa canina (Beispiel)","family":"Rosaceae","exam":"Laubblattform; Anzahl Stamina","diagnostic":"Folhas pinadas com 5–7 folíolos serrados; acúleos curvos; cinco pétalas e muitos estames.","memory":"Acúleos, folíolos serrados, cinórrodo.","genus":"Rosa","common_de":"Hunds-Rose (Beispiel)","common_pt":"Roseira-brava (exemplo)"},{"n":87,"species":"Sorbus aucuparia","family":"Rosaceae","exam":"Blütenstand; Fruchttyp","diagnostic":"Folhas pinadas; corimbos brancos; frutos vermelho-alaranjados tipo pomo.","memory":"Folhas pinadas e cachos vermelhos.","genus":"Sorbus","common_de":"Vogelbeere / Eberesche","common_pt":"Sorveira-dos-pássaros"},{"n":88,"species":"Galium aparine","family":"Rubiaceae","exam":"Laubblattstellung; Fruchttyp","diagnostic":"Folhas em verticilos de 6–8; pelos/ganchos aderentes; fruto divide-se em dois mericarpos.","memory":"A planta que gruda na roupa.","genus":"Galium","common_de":"Kletten-Labkraut","common_pt":"Amor-de-hortelão"},{"n":89,"species":"Populus alba","family":"Salicaceae","exam":"Geschlechtsverteilung; Diasporenausbreitung","diagnostic":"Face inferior das folhas branca e feltrada; geralmente dioica; sementes com pelos dispersas pelo vento.","memory":"Folha branca por baixo.","genus":"Populus","common_de":"Silber-Pappel","common_pt":"Choupo-branco"},{"n":90,"species":"Salix cinerea","family":"Salicaceae","exam":"Laubblattstellung; Bestäubungstyp","diagnostic":"Folhas alternas ovadas, face inferior cinzenta/pilosa; amentilhos; polinização por insetos.","memory":"Salgueiro com folhas acinzentadas por baixo.","genus":"Salix","common_de":"Grauweide","common_pt":"Salgueiro-cinzento"},{"n":91,"species":"Acer campestre","family":"Sapindaceae","exam":"Perianth-Typ; Standort","diagnostic":"Folhas opostas com cinco lobos arredondados; flores pequenas verde-amareladas; perianto diferenciado pouco vistoso; sebes e bordas de mata.","memory":"Bordo-de-campo de lobos arredondados.","genus":"Acer","common_de":"Feldahorn","common_pt":"Bordo-campestre"},{"n":92,"species":"Acer negundo","family":"Sapindaceae","exam":"Laubblattform; Bestäubungstyp","diagnostic":"Folhas opostas compostas com 3–7 folíolos; polinização principalmente pelo vento.","memory":"Bordo que parece freixo: folhas compostas.","genus":"Acer","common_de":"Eschen-Ahorn","common_pt":"Bordo-negundo"},{"n":93,"species":"Acer platanoides","family":"Sapindaceae","exam":"Laubblattform; Fruchttyp","diagnostic":"Folhas opostas com lobos pontiagudos; pecíolo com látex branco; dissâmara com asas quase horizontais.","memory":"Lobos pontiagudos e duas asas abertas.","genus":"Acer","common_de":"Spitzahorn","common_pt":"Bordo-da-Noruega"},{"n":94,"species":"Acer pseudoplatanus","family":"Sapindaceae","exam":"Blütenstand; Bestäubungstyp","diagnostic":"Folhas opostas com cinco lobos e margens serradas; flores em racemos pendentes; polinização por insetos.","memory":"Bordo-sicômoro: cachos florais pendentes.","genus":"Acer","common_de":"Bergahorn","common_pt":"Bordo-branco / falso-plátano"},{"n":95,"species":"Aesculus hippocastanum","family":"Sapindaceae","exam":"Laubblattform; Blütenstand","diagnostic":"Folhas palmado-compostas com 5–7 folíolos; panículas terminais eretas de flores brancas.","memory":"Castanheiro-da-Índia: dedos de uma mão.","genus":"Aesculus","common_de":"Gewöhnliche Rosskastanie","common_pt":"Castanheiro-da-Índia"},{"n":96,"species":"Solanum tuberosum","family":"Solanaceae","exam":"Fruchttyp; Stärkespeicherung","diagnostic":"Folhas compostas; flores brancas/violetas; fruto baga; amido armazenado em tubérculos caulinares.","memory":"Tubérculo é caule; fruto é baga.","genus":"Solanum","common_de":"Kartoffel","common_pt":"Batateira"},{"n":97,"species":"Taxus baccata","family":"Taxaceae","exam":"Samenhülle; Sekundärmetabolite","diagnostic":"Semente parcialmente envolvida por arilo vermelho; taxanos/taxina; sementes e folhas tóxicas.","memory":"Arilo vermelho em taça; planta tóxica.","genus":"Taxus","common_de":"Europäische Eibe","common_pt":"Teixo-europeu"},{"n":98,"species":"Ulmus minor","family":"Ulmaceae","exam":"Bestäubungstyp; Fruchttyp","diagnostic":"Folhas alternas com base assimétrica e margem duplamente serrada; flores antes das folhas; vento; sâmara.","memory":"Base assimétrica e fruto alado.","genus":"Ulmus","common_de":"Feldulme","common_pt":"Ulmeiro-menor"},{"n":99,"species":"Urtica dioica","family":"Urticaceae","exam":"Geschlechtsverteilung; Standort","diagnostic":"Folhas opostas serradas com pelos urticantes; geralmente dioica; solos ricos em nitrogênio e locais perturbados.","memory":"Urtiga: folhas opostas e pelos que picam.","genus":"Urtica","common_de":"Große Brennnessel","common_pt":"Urtiga-maior"},{"n":100,"species":"Viola tricolor","family":"Violaceae","exam":"Fruchttyp; Lebensalter/Lebensform","diagnostic":"Flores com cinco pétalas multicoloridas e esporão curto; cápsula; anual ou bienal.","memory":"Amor-perfeito-silvestre: flor multicolorida e cápsula.","genus":"Viola","common_de":"Wildes Stiefmütterchen","common_pt":"Amor-perfeito-bravo"}];
-const EN=["Black elder","Snowdrop","Ramsons (wild garlic)","Wild carrot","Common hogweed","Lords-and-ladies","Common ivy","Lily of the valley","Yarrow","Mugwort","Greater burdock","Common daisy","Brown knapweed","Spear thistle","German chamomile","Tansy","Common dandelion","Coltsfoot","Small balsam","Common barberry","Oregon grape","Black alder","Silver birch","European hornbeam","Common hazel","Viper's bugloss","Field forget-me-not","Common lungwort","Garlic mustard","Shepherd's purse","Harebell","Common hop","Snowberry","Common valerian","Deptford pink (example)","Common chickweed","Fat hen (white goosefoot)","Field bindweed","Common juniper","Glaucous sedge (example)","Field horsetail","Heather (ling)","Cypress spurge","Common bird's-foot trefoil","Black locust","White clover","Bush vetch","European beech","Sessile oak","English oak","Herb Robert","St John's wort","Yellow flag","Ground-ivy","Spotted dead-nettle","Garden tulip (example)","Saucer magnolia (example)","Common mallow","Small-leaved lime","Border forsythia","European ash","Wild privet","Greater celandine","Common poppy","Hollowroot","European larch","Scots pine","Ribwort plantain","Foxglove","Germander speedwell","London plane","Couch grass","Cock's-foot","Perennial ryegrass","Annual meadow-grass","Japanese knotweed","Common sorrel","Cowslip","Wood anemone","Traveller's-joy (old man's beard)","Lesser celandine","Common hawthorn","Wild strawberry","Wood avens","Apple","Dog rose (example)","Rowan","Cleavers","White poplar","Grey willow","Field maple","Box elder","Norway maple","Sycamore","Horse chestnut","Potato","Yew","Field elm","Stinging nettle","Wild pansy"];
-const DGEN=["Shrub; opposite pinnate leaves, white flowers in corymbs, black fruits. Drupe-like fruit; hedges and rich soils.", "Drooping white flower, 3 long outer and 3 shorter inner tepals. Inferior ovary; bulb.", "Broad leaves smelling of garlic; white flowers in an umbel; capsule.", "Divided leaves, white compound umbel, spiny fruits. Schizocarp; usually biennial.", "Robust plant, large lobed leaves, compound umbels; fruit splitting into two mericarps.", "Spadix inside a spathe; sagittate leaves, sometimes spotted; reticulate venation.", "Woody climber with adhesive roots; juvenile leaves lobed; black drupe-type fruits.", "Usually two basal leaves; white drooping flowers in a one-sided raceme; rhizomatous geophyte.", "Very finely divided leaves; white/pinkish flower heads in a corymb.", "Lobed leaves, pale underside; inconspicuous flower heads. Mainly wind-pollinated; traditional aromatic use.", "Huge cordate leaves; involucral bracts with hooks; disturbed, nutrient-rich sites.", "Basal rosette; yellow centre with white ray florets. Perennial; lawns and mown meadows.", "Purple flower heads; showy marginal florets; bracts with brown appendages; meadows.", "Deeply lobed, spiny leaves; spiny winged stem; usually biennial.", "Fine leaves; white/yellow flower head; hollow conical receptacle. Arable soils; essential oil with bisabolol/chamazulene.", "Aromatic pinnate leaves; yellow button-like heads without ray florets; cypsela.", "Rosette of lobed leaves; solitary yellow head on a hollow scape; taproot.", "Yellow flowers before the leaves; later leaves large and cordate. Early flowering; traditional cough remedy.", "Pale yellow flowers with a spur; explosive capsules. Annual; naturalised neophyte.", "Spiny shrub; leaves in fascicles; yellow flowers, red fruits.", "Pinnately compound leaves, leathery leaflets with spiny margins; introduced species.", "Rounded leaves with a notched tip; woody cones; wet sites; monoecious.", "White peeling bark; triangular serrate leaves; catkins; winged nutlets.", "Leaves with pleated veins and doubly serrate margin; fruit with a three-lobed bract.", "Shrub with rounded, cordate leaves; male catkins; hazelnuts.", "Stiff, rough hairs; pink flowers turning blue; coiled inflorescence.", "Tiny blue flowers; corolla with five lobes; fruit splitting into four nutlets.", "Spotted leaves; pink flowers turning blue-violet; actinomorphic corolla.", "Garlic-smelling leaves; flowers with four petals in a cross; siliqua; hedges.", "Basal rosette; white flowers; triangular, heart-shaped fruits. Silicle; annual/biennial.", "Blue bell-shaped flowers; basal leaves round, stem leaves narrow; inferior ovary.", "Climber; opposite lobed leaves; cones on female plants. Dioecious, perennial.", "Shrub with opposite leaves and white berries; inferior ovary; ornamental.", "Pinnate leaves; pale flowers in clusters; flowers usually zygomorphic; dry fruit with a pappus.", "Narrow opposite leaves; spotted pink flowers; capsule; toothed petals.", "Five white split petals look like ten; line of hairs on the stem; flowers much of the year.", "Young leaves sometimes mealy; green flowers; wind-pollinated; one-seeded fruit.", "Twining stems; sagittate leaves; funnel-shaped flowers; rhizomatous perennial; capsule.", "Shrub/conifer; needles in whorls of three with a white stripe; fleshy blue-black female cone.", "Leaves in three ranks; triangular stem; spikes, sometimes with separate sexes.", "Jointed stems; leaves reduced to sheaths at the nodes; whorled branches; rhizomatous perennial.", "Dwarf shrub with opposite scale-like leaves; purple flowers; petaloid calyx.", "Narrow needle-like leaves; cyathium; capsule usually three-lobed.", "Three leaflets and two stipules that look like leaflets; yellow flowers; narrow legume.", "Pinnate leaves; fragrant white flowers in pendulous racemes; introduced from North America.", "Three leaflets with a pale mark; creeping stems that root; stoloniferous perennial.", "Pinnate leaves ending in a tendril; purple flowers; perennial herb.", "Ovate, wavy-margined leaves; smooth grey bark; spiny cupule usually holding two beechnuts.", "Leaf with cuneate base and longer petiole; almost sessile acorns; well-drained soils.", "Leaf with short petiole and auriculate base; acorns on long stalks; wind-pollinated.", "Palmately divided leaves; reddish stems; beaked fruit, schizocarp of five mericarps.", "Opposite leaves with translucent dots; yellow flowers; capsule; traditional medicinal use and drug interactions.", "Sword-shaped leaves; large yellow flowers; floral structure adapted to insects; wet sites.", "Creeping square stems; rounded, crenate opposite leaves; violet two-lipped flowers.", "Opposite leaves often silvery; two-lipped flowers in verticillasters; shade and hedges.", "Six tepals; broad leaves with parallel venation; superior ovary; alternate leaves.", "Large flowers before the leaves; numerous free carpels; actinomorphic flower.", "Palmate leaves; pink flowers with dark veins; stamen filaments fused into a tube; schizocarp.", "Cordate leaves; reddish-brown hairs in the vein axils; fruit attached to a winged bract; shade tree.", "Yellow four-lobed flowers before the leaves; actinomorphic corolla; flowers early in spring.", "Pinnately compound leaves with serrate leaflets; black buds; variable/polygamous sexual system.", "Shrub with opposite leaves; white flowers in panicles; black berry-type fruits.", "Four yellow petals; lobed leaves; orange latex; traditional use against warts not recommended.", "Four red petals; two sepals fall as the flower opens; capsule; ploughed fields.", "Spurred flowers, pink/purple/white; divided leaves; hollow tuber; geophyte.", "Soft needles in clusters, turning yellow and falling in winter; native to European mountains.", "Needles in pairs; orange bark high on the trunk; small woody cones; needles last several years.", "Rosette of lanceolate leaves with longitudinal veins; cylindrical spike.", "Purple tubular flowers with inner spots in a spike; zygomorphic corolla; historical source of cardiac drugs; toxic.", "Blue four-lobed flowers; stem with two lines of hairs; two stamens; capsule.", "Palmately lobed leaves; flaking, mottled bark; hanging fruit balls.", "Rhizomatous grass; sessile spikelets alternating on a spike; alternate leaves with auricles.", "Panicle with dense clusters of spikelets; broad leaves and compressed sheaths; meadows/pastures.", "Narrow spike with alternate spikelets set edgewise; many-flowered spikelets; fodder and lawns.", "Small grass with an open panicle; flowers almost all year; pavements, compacted soils and lawns.", "Tall hollow, knotty stems; large leaves; rhizomatous perennial, spreads by rhizome/stem fragments.", "Leaves with arrow-shaped basal lobes; reddish inflorescence; usually dioecious; oxalic acid/oxalates.", "Yellow flowers in a one-sided umbel; tubular corolla with orange spots; capsule.", "Solitary white flower; three divided leaf-like bracts; tepals; rhizomatous geophyte.", "Woody climber; opposite compound leaves; fruits with plumose styles.", "Glossy cordate/reniform leaves; yellow flowers with tepals; numerous free carpels.", "Thorny branches; lobed leaves; white flowers in a corymb; red pome-type fruits.", "Leaves with three serrate leaflets; white flowers; achenes on a fleshy receptacle.", "Alternate leaves with a larger terminal leaflet; yellow flowers; hooked fruits; shaded, rich sites.", "Alternate serrate leaves; white/pink flowers; pome fruit; cultivated species.", "Pinnate leaves with 5–7 serrate leaflets; curved prickles; five petals and many stamens.", "Pinnate leaves; white corymbs; red-orange pome-type fruits.", "Leaves in whorls of 6–8; clinging hairs/hooks; fruit splits into two mericarps.", "Leaf underside white and felted; usually dioecious; seeds with hairs, wind-dispersed.", "Alternate ovate leaves, underside grey/hairy; catkins; insect-pollinated.", "Opposite leaves with five rounded lobes; small greenish-yellow flowers; inconspicuous differentiated perianth; hedges and woodland edges.", "Opposite compound leaves with 3–7 leaflets; mainly wind-pollinated.", "Opposite leaves with pointed lobes; petiole with white latex; double samara with nearly horizontal wings.", "Opposite leaves with five lobes and serrate margins; flowers in pendulous racemes; insect-pollinated.", "Palmately compound leaves with 5–7 leaflets; erect terminal panicles of white flowers.", "Compound leaves; white/violet flowers; berry fruit; starch stored in stem tubers.", "Seed partly enclosed by a red aril; taxanes/taxine; seeds and leaves toxic.", "Alternate leaves with asymmetric base and doubly serrate margin; flowers before the leaves; wind; samara.", "Opposite serrate leaves with stinging hairs; usually dioecious; nitrogen-rich soils and disturbed sites.", "Flowers with five multicoloured petals and a short spur; capsule; annual or biennial."],DGDE=["Strauch; gegenständige gefiederte Blätter, weiße Blüten in Trugdolden, schwarze Früchte. Steinfruchtartige Frucht; Hecken und nährstoffreiche Böden.", "Hängende weiße Blüte, 3 lange äußere und 3 kürzere innere Blütenhüllblätter. Unterständiger Fruchtknoten; Zwiebel.", "Breite Blätter mit Knoblauchgeruch; weiße Blüten in einer Dolde; Kapsel.", "Zerteilte Blätter, weiße Doppeldolde, stachelige Früchte. Spaltfrucht; meist zweijährig.", "Kräftige Pflanze, große gelappte Blätter, Doppeldolden; Frucht in zwei Teilfrüchten.", "Kolben in einem Hochblatt (Spatha); pfeilförmige, teils gefleckte Blätter; netznervig.", "Verholzende Kletterpflanze mit Haftwurzeln; Jugendblätter gelappt; schwarze steinfruchtartige Früchte.", "Meist zwei grundständige Blätter; weiße hängende Blüten in einseitswendiger Traube; Rhizomgeophyt.", "Sehr fein zerteilte Blätter; weiße/rosa Köpfchen in einem Ebenstrauß.", "Gelappte Blätter, Unterseite hell; unscheinbare Köpfchen. Überwiegend Windbestäubung; traditionelle aromatische Verwendung.", "Riesige herzförmige Blätter; Hüllblätter des Köpfchens mit Haken; gestörte, nährstoffreiche Standorte.", "Grundrosette; gelbes Zentrum mit weißen Zungenblüten. Ausdauernd; Rasen und gemähte Wiesen.", "Purpurne Köpfchen; auffällige Randblüten; Hüllblätter mit braunen Anhängseln; Wiesen.", "Tief gelappte, stachelige Blätter; stacheliger, geflügelter Stängel; meist zweijährig.", "Feine Blätter; weißes/gelbes Köpfchen; hohler, kegelförmiger Blütenboden. Ackerböden; ätherisches Öl mit Bisabolol/Chamazulen.", "Aromatische gefiederte Blätter; gelbe knopfartige Köpfchen ohne Zungenblüten; Achäne (Cypsela).", "Rosette gelappter Blätter; einzelnes gelbes Köpfchen auf hohlem Schaft; Pfahlwurzel.", "Gelbe Blüten vor den Blättern; spätere Blätter groß und herzförmig. Frühblüher; traditionell gegen Husten.", "Blassgelbe Blüten mit Sporn; Schleuderkapseln. Einjährig; eingebürgerter Neophyt.", "Dorniger Strauch; Blätter in Büscheln; gelbe Blüten, rote Früchte.", "Gefiederte Blätter, ledrige Teilblätter mit stacheligem Rand; eingeführte Art.", "Rundliche Blätter mit eingekerbter Spitze; verholzte Zapfen; Feuchtstandorte; einhäusig.", "Weiße, abschälende Rinde; dreieckige gesägte Blätter; Kätzchen; geflügelte Nüsschen.", "Blätter mit gefalteten Nerven und doppelt gesägtem Rand; Frucht mit dreilappigem Hochblatt.", "Strauch mit rundlichen, herzförmigen Blättern; männliche Kätzchen; Haselnüsse.", "Steife, raue Haare; rosa Blüten, die blau werden; Wickel.", "Winzige blaue Blüten; Krone mit fünf Zipfeln; Frucht zerfällt in vier Nüsschen.", "Gefleckte Blätter; rosa Blüten, die blauviolett werden; radiäre Krone.", "Blätter mit Knoblauchgeruch; Blüten mit vier Kronblättern über Kreuz; Schote; Hecken.", "Grundrosette; weiße Blüten; dreieckige, herzförmige Früchte. Schötchen; ein-/zweijährig.", "Blaue glockenförmige Blüten; Grundblätter rundlich, Stängelblätter schmal; unterständiger Fruchtknoten.", "Kletterpflanze; gegenständige gelappte Blätter; Zapfen an weiblichen Pflanzen. Zweihäusig, ausdauernd.", "Strauch mit gegenständigen Blättern und weißen Beeren; unterständiger Fruchtknoten; Zierpflanze.", "Gefiederte Blätter; helle Blüten in Büscheln; Blüten meist zygomorph; trockene Frucht mit Pappus.", "Schmale gegenständige Blätter; gefleckte rosa Blüten; Kapsel; gezähnte Kronblätter.", "Fünf weiße, tief gespaltene Kronblätter wirken wie zehn; Haarleiste am Stängel; blüht große Teile des Jahres.", "Junge Blätter manchmal mehlig bestäubt; grüne Blüten; Windbestäubung; einsamige Frucht.", "Windende Stängel; pfeilförmige Blätter; trichterförmige Blüten; Rhizomstaude; Kapsel.", "Strauch/Nadelbaum; Nadeln zu dritt im Quirl mit weißem Streifen; fleischiger blauschwarzer Beerenzapfen.", "Blätter in drei Reihen; dreikantiger Stängel; Ähren, teils getrenntgeschlechtlich.", "Gegliederte Stängel; Blätter zu Scheiden an den Knoten reduziert; quirlige Äste; Rhizomstaude.", "Zwergstrauch mit gegenständigen Schuppenblättern; purpurne Blüten; kronblattartiger Kelch.", "Schmale nadelartige Blätter; Cyathium; Kapsel meist dreilappig.", "Drei Teilblätter und zwei blattartige Nebenblätter; gelbe Blüten; schmale Hülse.", "Gefiederte Blätter; duftende weiße Blüten in hängenden Trauben; aus Nordamerika eingeführt.", "Drei Teilblätter mit hellem Fleck; kriechende, wurzelnde Stängel; Ausläuferstaude.", "Gefiederte Blätter mit Ranke an der Spitze; purpurne Blüten; ausdauernde Staude.", "Eiförmige, wellige Blätter; glatte graue Rinde; stacheliger Fruchtbecher meist mit zwei Bucheckern.", "Blatt mit keilförmigem Grund und längerem Stiel; fast sitzende Eicheln; gut durchlässige Böden.", "Blatt mit kurzem Stiel und geöhrtem Grund; Eicheln an langen Stielen; Windbestäubung.", "Handförmig geteilte Blätter; rötliche Stängel; Schnabelfrucht, Spaltfrucht aus fünf Teilfrüchten.", "Gegenständige Blätter mit durchscheinenden Punkten; gelbe Blüten; Kapsel; traditionell medizinisch, Wechselwirkungen mit Medikamenten.", "Schwertförmige Blätter; große gelbe Blüten; an Insekten angepasster Blütenbau; Feuchtstandorte.", "Kriechende vierkantige Stängel; rundliche, gekerbte gegenständige Blätter; violette zweilippige Blüten.", "Gegenständige, oft silbrige Blätter; zweilippige Blüten in Scheinquirlen; Schatten und Hecken.", "Sechs Blütenhüllblätter; breite Blätter mit parallelen Nerven; oberständiger Fruchtknoten; wechselständige Blätter.", "Große Blüten vor den Blättern; zahlreiche freie Fruchtblätter; radiäre Blüte.", "Handförmige Blätter; rosa Blüten mit dunklen Adern; zu einer Röhre verwachsene Staubfäden; Spaltfrucht.", "Herzförmige Blätter; rotbraune Haarbüschel in den Nervenwinkeln; Frucht am geflügelten Hochblatt; Schattenbaum.", "Gelbe vierzipfelige Blüten vor den Blättern; radiäre Krone; blüht früh im Frühjahr.", "Gefiederte Blätter mit gesägten Teilblättern; schwarze Knospen; variables/polygames Geschlechtssystem.", "Strauch mit gegenständigen Blättern; weiße Blüten in Rispen; schwarze beerenartige Früchte.", "Vier gelbe Kronblätter; gelappte Blätter; oranger Milchsaft; traditionelle Verwendung gegen Warzen nicht empfohlen.", "Vier rote Kronblätter; zwei Kelchblätter fallen beim Öffnen ab; Kapsel; Äcker.", "Gespornte Blüten, rosa/purpurn/weiß; zerteilte Blätter; hohle Knolle; Geophyt.", "Weiche Nadeln in Büscheln, im Winter gelb und abfallend; heimisch in europäischen Gebirgen.", "Nadeln paarweise; orange Rinde im oberen Stammbereich; kleine verholzte Zapfen; Nadeln mehrjährig.", "Rosette lanzettlicher Blätter mit Längsnerven; zylindrische Ähre.", "Purpurne röhrige Blüten mit Flecken innen in einer Traube; zygomorphe Krone; historische Quelle von Herzmitteln; giftig.", "Blaue vierzipfelige Blüten; Stängel mit zwei Haarleisten; zwei Staubblätter; Kapsel.", "Handförmig gelappte Blätter; abschuppende, gefleckte Rinde; hängende Fruchtkugeln.", "Rhizomgras; sitzende Ährchen wechselständig in einer Ähre; wechselständige Blätter mit Öhrchen.", "Rispe mit dichten Ährchenknäueln; breite Blätter und zusammengedrückte Scheiden; Wiesen/Weiden.", "Schmale Ähre mit wechselständigen, seitlich ansitzenden Ährchen; vielblütige Ährchen; Futter und Rasen.", "Kleines Gras mit offener Rispe; blüht fast das ganze Jahr; Pflaster, verdichtete Böden und Rasen.", "Hohe hohle, knotige Stängel; große Blätter; Rhizomstaude, verbreitet sich durch Rhizom-/Stängelstücke.", "Blätter mit pfeilförmigen Grundlappen; rötlicher Blütenstand; meist zweihäusig; Oxalsäure/Oxalate.", "Gelbe Blüten in einseitswendiger Dolde; röhrige Krone mit orangen Flecken; Kapsel.", "Einzelne weiße Blüte; drei zerteilte, laubblattartige Hochblätter; Blütenhüllblätter; Rhizomgeophyt.", "Verholzende Kletterpflanze; gegenständige zusammengesetzte Blätter; Früchte mit gefiederten Griffeln.", "Glänzende herz-/nierenförmige Blätter; gelbe Blüten mit Blütenhüllblättern; zahlreiche freie Fruchtblätter.", "Dornige Zweige; gelappte Blätter; weiße Blüten in Ebensträußen; rote apfelartige Früchte (Apfelfrüchte).", "Blätter mit drei gesägten Teilblättern; weiße Blüten; Nüsschen auf fleischigem Blütenboden.", "Wechselständige Blätter mit größerem Endblättchen; gelbe Blüten; Früchte mit Haken; schattige, nährstoffreiche Standorte.", "Wechselständige gesägte Blätter; weiße/rosa Blüten; Apfelfrucht; Kulturart.", "Gefiederte Blätter mit 5–7 gesägten Teilblättern; gebogene Stacheln; fünf Kronblätter und viele Staubblätter.", "Gefiederte Blätter; weiße Ebensträuße; rotorange Apfelfrüchte.", "Blätter in Quirlen zu 6–8; haftende Haare/Haken; Frucht zerfällt in zwei Teilfrüchte.", "Blattunterseite weiß und filzig; meist zweihäusig; Samen mit Haarschopf, Windverbreitung.", "Wechselständige eiförmige Blätter, Unterseite grau/behaart; Kätzchen; Insektenbestäubung.", "Gegenständige Blätter mit fünf gerundeten Lappen; kleine grüngelbe Blüten; unscheinbare, in Kelch und Krone gegliederte Blütenhülle; Hecken und Waldränder.", "Gegenständige zusammengesetzte Blätter mit 3–7 Teilblättern; überwiegend Windbestäubung.", "Gegenständige Blätter mit spitzen Lappen; Blattstiel mit weißem Milchsaft; Doppelflügelfrucht mit fast waagrechten Flügeln.", "Gegenständige Blätter mit fünf Lappen und gesägtem Rand; Blüten in hängenden Trauben; Insektenbestäubung.", "Gefingerte Blätter mit 5–7 Teilblättern; aufrechte endständige Rispen weißer Blüten.", "Zusammengesetzte Blätter; weiße/violette Blüten; Beerenfrucht; Stärke in Sprossknollen gespeichert.", "Same teilweise von rotem Arillus umgeben; Taxane/Taxin; Samen und Nadeln giftig.", "Wechselständige Blätter mit asymmetrischem Grund und doppelt gesägtem Rand; Blüten vor den Blättern; Wind; Flügelnuss.", "Gegenständige gesägte Blätter mit Brennhaaren; meist zweihäusig; stickstoffreiche Böden und gestörte Standorte.", "Blüten mit fünf mehrfarbigen Kronblättern und kurzem Sporn; Kapsel; ein- oder zweijährig."];
-const D=DATA.map((d,i)=>({...d,sci:d.species.replace(' (Beispiel)',''),common_de:d.common_de.replace(/\s*\((Beispiel|exemplo|example)\)/gi,'').trim(),common_pt:d.common_pt.replace(/\s*\((Beispiel|exemplo|example)\)/gi,'').trim(),common_en:EN[i].replace(/\s*\((Beispiel|exemplo|example)\)/gi,'').replace(/ \((.+)\)$/,' / $1').trim(),diag:{pt:d.diagnostic,de:DGDE[i],en:DGEN[i]}}));
-const fams=[...new Set(D.map(d=>d.family))],KEY='flora_v1';
-const FH={};fams.forEach((f,i)=>FH[f]=Math.round(i*137.508%360));const hh=f=>FH[f]??205;
-let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
-S.xp=S.xp||0;S.streak=S.streak||0;S.str=S.str||{};S.done=S.done||{};S.ms=S.ms||{};S.cs=S.cs||{};
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
-const LI={pt:0,de:1,en:2},FL={pt:'🇵🇹',de:'🇩🇪',en:'🇬🇧'};let LANG=LI[S.lang]!==undefined?S.lang:'pt';
-const $=s=>document.querySelector(s),shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
-const day=(d=new Date())=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
-const yest=()=>{const d=new Date();d.setDate(d.getDate()-1);return day(d)};
-const streakNow=()=>S.last&&(S.last===day()||S.last===yest())?S.streak:0;
-const LES=Array.from({length:Math.ceil(D.length/10)},(_,k)=>D.map((_,i)=>i).slice(k*10,k*10+10));
-const mastery=k=>LES[k].reduce((a,i)=>a+(S.str[i]||0),0)/(LES[k].length*5)*100;
-const knownN=()=>Object.values(S.str).filter(v=>v>=3).length;
-let AC;function beep(f,t=.12,ty='sine'){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(.1,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+t);o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+t)}catch(e){}}
-function show(v){$('#qm').hidden=true;document.querySelectorAll('.view').forEach(e=>e.classList.toggle('on',e.id===v));$('#nav').style.display=v==='home'||v==='dict'?'':'none';document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));window.scrollTo(0,0);if(v==='home')home();if(v==='dict')dict()}
-const TX={title:['Flora alemã','Deutsche Flora','German flora'],sub:['100 espécies · uma lição de 10 por vez','100 Arten · je Lektion 10','100 species · 10 per lesson'],learn:['Aprender','Lernen','Learn'],dict:['Dicionário','Lexikon','Dictionary'],search:['Buscar espécie, família, característica…','Art, Familie, Merkmal suchen…','Search species, family, trait…'],none:['Nada encontrado.','Nichts gefunden.','Nothing found.'],weak:['Praticar as mais fracas','Schwächste üben','Practice the weakest'],lock:['Complete uma lição para liberar','Schließe eine Lektion ab, um es freizuschalten','Finish a lesson to unlock'],wsub:['10 espécies que você mais esquece','Die 10 Arten, die du am meisten vergisst','The 10 species you forget most'],u1:['🌿 100 espécies','🌿 100 Arten','🌿 100 species'],u2:['📐 Morfologia básica','📐 Grundlagen der Morphologie','📐 Basic morphology'],u3:['🧩 Reconhecer famílias','🧩 Pflanzenfamilien erkennen','🧩 Identify plant families'],qcombo:['Que família combina com estas características?','Welche Pflanzenfamilie passt zu diesen Merkmalen?','Which family matches this combination of features?'],start:['COMEÇAR','START','START'],new:['NOVO','NEU','NEW'],mnl:['Ovário e folhas','Fruchtknoten & Blätter','Ovary & leaves'],mnl2:['Formato da folha','Blattform','Leaf shape'],mnl3:['Borda da folha','Blattrand','Leaf margin'],mnl4:['Inflorescências','Blütenstände','Inflorescences'],pg:['Em alemão','','In German'],lesson:['Lição','Lektion','Lesson'],qp:['Que planta é esta?','Welche Pflanze ist das?','What plant is this?'],qd:['Qual é o nome científico?','Wie lautet der wissenschaftliche Name?','What is the scientific name?'],qf:['A que família pertence?','Zu welcher Familie gehört sie?','Which family does it belong to?'],qg:['Quem é esta planta?','Welche Pflanze ist das?','Which plant is this?'],check:['Verificar','Prüfen','Check'],cont:['Continuar','Weiter','Continue'],good:[['Correto!','Isso aí!','Perfeito!','Mandou bem!'],['Richtig!','Genau!','Perfekt!','Stark!'],['Correct!','Nice!','Perfect!','Well done!']],right:['Resposta correta:','Richtige Antwort:','Correct answer:'],fam:['Família','Familie','Family'],how:['Como reconhecer','So erkennst du sie','How to recognise it'],exam:['Na prova:','Prüfung:','Exam:'],done:['Lição completa!','Lektion geschafft!','Lesson complete!'],noh:['Sem corações','Keine Herzen mehr','Out of hearts'],ok0:['Sem nenhum erro. Impecável!','Kein einziger Fehler. Perfekt!','No mistakes. Flawless!'],ok1:['Bom trabalho! Os erros voltam na revisão.','Gut gemacht! Fehler kommen in der Wiederholung wieder.','Nice work! Your mistakes will come back in review.'],fail:['Revise as espécies abaixo e tente de novo.','Sieh dir die Arten unten an und versuche es erneut.','Review the species below and try again.'],acc:['PRECISÃO','GENAUIGKEIT','ACCURACY'],strk:['SEQUÊNCIA','SERIE','STREAK'],qk:['Continuar aprendendo','Weiterlernen','Keep learning'],qe:['Encerrar lição','Lektion beenden','End lesson'],quit:['Sair da lição? O progresso desta lição será perdido.','Lektion verlassen? Der Fortschritt dieser Lektion geht verloren.','Leave the lesson? Progress in this lesson will be lost.'],pl:['Em português','Einfach gesagt','In English'],alt:['Foto da planta','Foto der Pflanze','Photo of the plant']};
-const t=k=>TX[k][LI[LANG]];
-const ex=d=>d.exam.split(';').map(x=>x.trim()).join(' · ');
-const names=(d,sep=' · ')=>'🇩🇪 '+d.common_de+(LANG==='de'?'':sep+FL[LANG]+' '+d['common_'+LANG]);
-function applyLang(){document.documentElement.lang=LANG;document.querySelectorAll('[data-t]').forEach(e=>e.textContent=t(e.dataset.t));$('#search').placeholder=t('search')}
-function setLang(v){LANG=v;S.lang=v;save();applyLang();show($('#dict').classList.contains('on')?'dict':'home')}
-document.addEventListener('change',e=>{if(e.target.matches('.lang'))setLang(e.target.value)});
-function statBar(){return`<span>🔥 ${streakNow()}</span><span>⚡ ${S.xp}</span><span>🌱 ${knownN()}/${D.length}</span><select class="lang" aria-label="Language">${[['pt','🇵🇹 PT'],['de','🇩🇪 DE'],['en','🇬🇧 EN']].map(([v,l])=>`<option value="${v}"${v===LANG?' selected':''}>${l}</option>`).join('')}</select>`}
-function home(){$('#stats').innerHTML=statBar();
- const nextK=LES.findIndex((_,k)=>!S.done[k]),seen=Object.keys(S.str).map(Number);
- const rb=$('#revb');rb.disabled=seen.length<5;rb.innerHTML=`<span class="ic">💪</span><div><b>${t('weak')}</b><small>${seen.length<5?t('lock'):t('wsub')}</small></div>`;
- const off=[0,38,58,38,0,-38,-58,-38];
- $('#path').innerHTML=morphNode().replace('class="unit b"','class="unit b"')+'<div class="unit">'+t('u1')+'</div>'+LES.map((ids,k)=>{const p=mastery(k),fl=[...new Set(ids.map(i=>D[i].family))],gold=p>=80;
-  return`<div class="nodew" style="transform:translateX(${off[k%8]}px)">${k===nextK?'<div class="go">'+t('start')+'</div>':''}<button class="node ${gold?'gold':''}" style="--p:${p|0}" data-k="${k}" aria-label="${t('lesson')} ${k+1}"><i>${gold?'★':k+1}</i></button><div class="nl">${fl.slice(0,2).join(', ')}${fl.length>2?' +'+(fl.length-2):''}</div></div>`}).join('');
- document.querySelectorAll('.node').forEach(b=>b.onclick=()=>b.dataset.c!==undefined?start(FC.map((_,i)=>i),'c',2):b.dataset.m!==undefined?start(MLES[+b.dataset.m],'m'+b.dataset.m,1):start(LES[b.dataset.k],+b.dataset.k))}
-$('#revb').onclick=()=>{const w=Object.keys(S.str).map(Number).sort((a,b)=>S.str[a]-S.str[b]||Math.random()-.5).slice(0,10);start(w,-1)};
-function dict(){$('#stats2').innerHTML=statBar();const q=$('#search').value.trim().toLowerCase();
- $('#dl').innerHTML=D.filter(d=>!q||Object.values(d).join(' ').toLowerCase().includes(q)).map(d=>{const s=S.str[D.indexOf(d)]||0;
-  return`<details class="dr" style="--h:${hh(d.family)}"><summary><div><b>${d.sci}</b><div class="f">${d.family}</div></div><span class="d">${'●'.repeat(s)}${'○'.repeat(5-s)}</span></summary><p>${names(d,'<br>')}</p>${LANG==='pt'?`<p>💡 ${d.memory}</p>`:''}<p>${d.diag[LANG]}</p></details>`}).join('')||`<p class="sub">${t('none')}</p>`}
-$('#search').oninput=dict;document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>show(b.dataset.v));
-const flower=k=>{const [t,w,cy,ry,rx]={h:[112,16,88,24,18],p:[96,30,102,22,17],e:[78,32,106,26,20]}[k],L=100-w,R=100+w,top=cy-ry-24,S='#6f8f4e';
- const pe=s=>{const x=100+s*(w+32);return`<ellipse cx="${x}" cy="${t-14}" rx="34" ry="15" transform="rotate(${-s*28} ${x} ${t-14})" fill="#c87ed0" stroke="#9a58a6" stroke-width="2"/>`};
- const st=s=>`<path d="M${100+s*(w-4)} ${t}L${100+s*(w+14)} ${t-46}" stroke="#555" stroke-width="2" fill="none"/><ellipse cx="${100+s*(w+14)}" cy="${t-50}" rx="4" ry="7" fill="#e6b422"/>`;
- const sp=s=>`<ellipse cx="${100+s*(w+4)}" cy="${t+1}" rx="9" ry="3.5" fill="#8fb06a"/>`;
- return`<svg viewBox="0 0 200 165" role="img" aria-label="Corte de flor">${pe(-1)+pe(1)+st(-1)+st(1)}<path d="M86 160L86 ${t+40}C86 ${t+30} ${L} ${t+24} ${L} ${t}L${R} ${t}C${R} ${t+24} 114 ${t+30} 114 ${t+40}L114 160Z" fill="#dfe6d0" stroke="${S}" stroke-width="2.5"/>${k==='p'?`<path d="M${L+7} ${t}L${R-7} ${t}C${R-7} ${t+20} ${R-16} ${t+28} 100 ${t+30}C${L+16} ${t+28} ${L+7} ${t+20} ${L+7} ${t}Z" style="fill:var(--card)" stroke="${S}" stroke-width="2"/>`:''}<path d="M100 ${cy-ry}V${top}" stroke="${S}" stroke-width="5"/><ellipse cx="100" cy="${cy}" rx="${rx}" ry="${ry}" fill="#cfe0ac" stroke="${S}" stroke-width="2.5"/><ellipse cx="100" cy="${cy}" rx="${rx*.55}" ry="${ry*.6}" fill="#f7fbef" stroke="${S}" stroke-width="1.5"/><circle cx="95" cy="${cy-4}" r="3" fill="#8fb06a"/><circle cx="105" cy="${cy+4}" r="3" fill="#8fb06a"/><ellipse cx="100" cy="${top}" rx="9" ry="4" fill="#8fb06a"/>${sp(-1)+sp(1)}</svg>`};
-const leaves=k=>{const lf=(y,a,sc=1,c='#7fbf4a')=>`<g transform="translate(100 ${y}) rotate(${a}) scale(${sc})"><ellipse cx="34" rx="30" ry="11" fill="${c}" stroke="#4f8a2a" stroke-width="2"/><path d="M6 0H60" stroke="#4f8a2a" stroke-width="1.5"/></g>`;let b='';
- if(k==='a')[[140,-35],[105,-145],[72,-35],[40,-145]].forEach(([y,a])=>b+=lf(y,a));
- if(k==='o')[120,60].forEach(y=>b+=lf(y,-30)+lf(y,-150));
- if(k==='v')[125,65].forEach(y=>b+=lf(y,-28)+lf(y,-152)+lf(y,-8,.8,'#9ccf6e')+lf(y,-172,.8,'#9ccf6e'));
- if(k==='r')[-15,-45,-75,-105,-135,-165].forEach(a=>b+=lf(150,a,.9));
- return`<svg viewBox="0 -6 200 176" role="img" aria-label="Disposição das folhas">${k==='r'?'':'<path d="M100 155V15" stroke="#6f8f4e" stroke-width="6" stroke-linecap="round"/>'}${b}</svg>`};
-const QM={o:['Qual é a posição do ovário?','Wie steht der Fruchtknoten?','What is the position of the ovary?'],l:['Como as folhas se inserem no caule?','Wie sind die Blätter am Stängel angeordnet?','How are the leaves arranged on the stem?']};
-const MORPH=[
-{g:'o',de:'oberständig · hypogyn',svg:()=>flower('h'),n:['Ovário súpero (hipógino)','Oberständiger Fruchtknoten','Superior ovary (hypogynous)'],tip:['Ovário no topo do receptáculo; pétalas e estames saem abaixo dele.','Fruchtknoten sitzt oben auf dem Blütenboden; Kron- und Staubblätter setzen darunter an.','Ovary sits on top of the receptacle; petals and stamens attach below it.']},
-{g:'o',de:'mittelständig · perigyn',svg:()=>flower('p'),n:['Ovário médio (perígino)','Mittelständiger Fruchtknoten','Half-inferior ovary (perigynous)'],tip:['Ovário numa taça (hipanto); pétalas e estames saem da borda, na altura dele. Ex.: Prunus.','Fruchtknoten liegt in einem Blütenbecher (Hypanthium); Kron- und Staubblätter setzen am Becherrand an. Bsp.: Prunus.','Ovary sits in a cup (hypanthium); petals and stamens attach at the rim. E.g. Prunus.']},
-{g:'o',de:'unterständig · epigyn',svg:()=>flower('e'),n:['Ovário ínfero (epígino)','Unterständiger Fruchtknoten','Inferior ovary (epigynous)'],tip:['Ovário afundado e fundido ao receptáculo; pétalas e estames saem acima dele. Ex.: Galanthus.','Fruchtknoten ist in den Blütenboden eingesenkt und mit ihm verwachsen; Kron- und Staubblätter setzen darüber an. Bsp.: Galanthus.','Ovary is sunk into and fused with the receptacle; petals and stamens attach above it. E.g. Galanthus.']},
-{g:'l',de:'wechselständig',svg:()=>leaves('a'),n:['Folhas alternas','Wechselständige Blätter','Alternate leaves'],tip:['Uma folha por nó, alternando os lados.','Ein Blatt pro Knoten, abwechselnd links und rechts.','One leaf per node, alternating sides.']},
-{g:'l',de:'gegenständig',svg:()=>leaves('o'),n:['Folhas opostas','Gegenständige Blätter','Opposite leaves'],tip:['Duas folhas por nó, frente a frente. Ex.: Urtica, Sambucus.','Zwei Blätter pro Knoten, einander gegenüber. Bsp.: Urtica, Sambucus.','Two leaves per node, facing each other. E.g. Urtica, Sambucus.']},
-{g:'l',de:'quirlständig',svg:()=>leaves('v'),n:['Folhas verticiladas','Quirlständige Blätter','Whorled leaves'],tip:['Três ou mais folhas por nó, em volta do caule.','Drei oder mehr Blätter pro Knoten rund um den Stängel.','Three or more leaves per node around the stem.']},
-{g:'l',de:'grundständig',svg:()=>leaves('r'),n:['Folhas basais (em roseta)','Grundständige Blätter (Rosette)','Basal leaves (rosette)'],tip:['Todas saem rente ao solo, sem caule folhoso. Ex.: Bellis, Taraxacum.','Alle Blätter sitzen am Boden, kein beblätterter Stängel. Bsp.: Bellis, Taraxacum.','All leaves at ground level, no leafy stem. E.g. Bellis, Taraxacum.']}];
-const leafForm=k=>{const G='#7fbf4a',E='#4f8a2a',el=(x,y,a,rx,ry)=>`<g transform="translate(${x} ${y}) rotate(${a})"><ellipse cx="${rx}" rx="${rx}" ry="${ry}" fill="${G}" stroke="${E}" stroke-width="2.5"/><path d="M0 0H${rx*2-6}" stroke="${E}" stroke-width="1.5"/></g>`;let b;
- if(k==='pal'){const V=(a,c,d,e,w=1.6)=>`<path d="M${a} ${c}L${d} ${e}" stroke="${E}" stroke-width="${w}" stroke-linecap="round"/>`;b='<path d="M100 126V166" stroke="#6f8f4e" stroke-width="5" stroke-linecap="round"/><path d="M100 124Q80 138 48 124L61.4 101.6Q44 84 40 62Q60 60 80.6 70.3Q82 40 100 12Q118 40 119.4 70.3Q140 60 160 62Q156 84 138.6 101.6L152 124Q120 138 100 124Z" fill="'+G+'" stroke="'+E+'" stroke-width="2.5" stroke-linejoin="round"/>'+V(100,118,100,18,2)+V(100,118,155,64,2)+V(100,118,45,64,2)+V(100,118,146,122,2)+V(100,118,54,122,2)+V(100,92,86,80)+V(100,92,114,80)+V(100,66,90,50)+V(100,66,110,50)+V(130,88,144,80)+V(130,88,140,92)+V(70,88,56,80)+V(70,88,60,92)}
- else if(k==='gef'){b='<path d="M100 164V44" stroke="#6f8f4e" stroke-width="5" stroke-linecap="round"/>'+[130,102,74].map(y=>el(100,y,-35,24,9)+el(100,y,-145,24,9)).join('')+el(100,48,-90,26,10)}
- else if(k==='drei'){b='<path d="M100 164V108" stroke="#6f8f4e" stroke-width="5"/>'+el(100,108,-90,36,22)+el(100,108,-20,36,22)+el(100,108,-160,36,22)}
- else{let d,ap=14;
-  if(k==='pal'){d='';for(let i=0;i<5;i++){const a=(-90+72*i)*Math.PI/180,c=a+Math.PI/5;d+=(i?'L':'M')+(100+Math.cos(a)*68|0)+' '+(92+Math.sin(a)*68|0)+'L'+(100+Math.cos(c)*30|0)+' '+(92+Math.sin(c)*30|0)}d+='Z'}
-  else{d={lan:'M100 134C76 104 80 50 100 10C120 50 124 104 100 134Z',ova:'M100 136C58 126 50 74 100 14C150 74 142 126 100 136Z',lin:'M100 136C91 100 91 48 100 10C109 48 109 100 100 136Z',cor:'M100 122C88 146 50 144 47 104C44 68 86 56 100 12C114 56 156 68 153 104C150 144 112 146 100 122Z',ren:'M100 120C86 142 40 138 38 96C38 56 70 42 100 44C130 42 162 56 162 96C160 138 114 142 100 120Z',sag:'M100 12C112 50 130 86 158 140C132 130 112 126 100 120C88 126 68 130 42 140C70 86 88 50 100 12Z'}[k];ap=k==='ren'?50:20}
-  b=`<path d="M100 164V126" stroke="#6f8f4e" stroke-width="5" stroke-linecap="round"/><path d="${d}" fill="${G}" stroke="${E}" stroke-width="2.5" stroke-linejoin="round"/>`+(k==='pal'?[0,1,2,3,4].map(i=>{const a=(-90+72*i)*Math.PI/180;return`<path d="M100 92L${100+Math.cos(a)*52|0} ${92+Math.sin(a)*52|0}" stroke="${E}" stroke-width="1.5"/>`}).join(''):`<path d="M100 130V${ap+10}" stroke="${E}" stroke-width="1.5"/>`)}
- return`<svg viewBox="0 0 200 170" role="img" aria-label="Formato da folha">${b}</svg>`};
-const leafMargin=k=>{const [n,f]={ent:[0,0],ser:[9,p=>7*p],den:[7,p=>8*(1-Math.abs(2*p-1))],cre:[9,p=>6*Math.sin(Math.PI*p)],sin:[4,p=>5*Math.sin(2*Math.PI*p)],lob:[3,p=>18*Math.sin(Math.PI*p)]}[k],P=[];
- for(let i=0;i<=160;i++){const t=i/160,w=(k==='lob'?30:42)*Math.sin(Math.PI*Math.pow(t,.75)),d=n?f((t*n)%1)*Math.pow(Math.sin(Math.PI*t),.5):0;P.push([w+d,135-t*120])}
- const R=P.map(([x,y])=>(100+x).toFixed(1)+' '+y.toFixed(1)),Lf=P.slice().reverse().map(([x,y])=>(100-x).toFixed(1)+' '+y.toFixed(1));
- return`<svg viewBox="0 0 200 170" role="img" aria-label="Borda da folha"><path d="M100 164V135" stroke="#6f8f4e" stroke-width="5" stroke-linecap="round"/><path d="M${R.join('L')}L${Lf.join('L')}Z" fill="#7fbf4a" stroke="#4f8a2a" stroke-width="2.5" stroke-linejoin="round"/><path d="M100 140V24" stroke="#4f8a2a" stroke-width="1.5"/></svg>`};
-const Q3=(a,b,c)=>[a,b,c];
-Object.assign(QM,{f:Q3('Qual é o formato da folha?','Welche Blattform ist das?','What is the leaf shape?'),b:Q3('Como é a margem da folha?','Wie ist der Blattrand?','What is the leaf margin like?')});
-const mi=(g,de,svg,n,tip)=>MORPH.push({g,de,svg,n,tip});
-mi('f','lanzettlich',()=>leafForm('lan'),['Folha lanceolada','Lanzettliches Blatt','Lanceolate leaf'],['Estreita e alongada, mais larga perto da base, ponta aguda. Ex.: Plantago lanceolata.','Schmal und lang, am breitesten nahe der Basis, spitz. Bsp.: Plantago lanceolata.','Narrow and elongated, widest near the base, pointed tip. E.g. Plantago lanceolata.']);
-mi('f','eiförmig',()=>leafForm('ova'),['Folha ovada','Eiförmiges Blatt','Ovate leaf'],['Formato de ovo, mais larga na base.','Eiform, am breitesten an der Basis.','Egg-shaped, widest at the base.']);
-mi('f','herzförmig',()=>leafForm('cor'),['Folha cordada (em coração)','Herzförmiges Blatt','Cordate (heart-shaped) leaf'],['Base com entalhe profundo, como um coração. Ex.: Tilia, Alliaria.','Grund mit tiefem Einschnitt, wie ein Herz. Bsp.: Tilia, Alliaria.','Base with a deep notch, like a heart. E.g. Tilia, Alliaria.']);
-mi('f','nierenförmig',()=>leafForm('ren'),['Folha reniforme (em rim)','Nierenförmiges Blatt','Reniform (kidney-shaped) leaf'],['Mais larga que comprida, com entalhe na base. Ex.: Glechoma.','Breiter als lang, mit Einschnitt am Grund. Bsp.: Glechoma.','Wider than long, with a notch at the base. E.g. Glechoma.']);
-mi('f','linealisch',()=>leafForm('lin'),['Folha linear','Lineales Blatt','Linear leaf'],['Muito estreita, de margens paralelas. Ex.: gramíneas.','Sehr schmal mit parallelen Rändern. Bsp.: Gräser.','Very narrow with parallel margins. E.g. grasses.']);
-mi('f','pfeilförmig',()=>leafForm('sag'),['Folha sagitada (ponta de flecha)','Pfeilförmiges Blatt','Sagittate (arrow-shaped) leaf'],['Lobos basais pontiagudos voltados para baixo. Ex.: Convolvulus arvensis.','Spitze Grundlappen zeigen nach unten. Bsp.: Convolvulus arvensis.','Pointed basal lobes directed downward. E.g. Convolvulus arvensis.']);
-mi('f','handförmig gelappt',()=>leafForm('pal'),['Folha palmatilobada','Handförmig gelapptes Blatt','Palmately lobed leaf'],['Lobos partem de um ponto, como dedos de uma mão. Ex.: Acer.','Lappen gehen von einem Punkt aus, wie Finger einer Hand. Bsp.: Acer.','Lobes radiate from one point, like fingers of a hand. E.g. Acer.']);
-mi('f','gefiedert',()=>leafForm('gef'),['Folha composta pinada','Gefiedertes Blatt','Pinnately compound leaf'],['Folíolos em pares ao longo de um eixo central. Ex.: Sambucus, Robinia.','Teilblätter paarig entlang einer Mittelachse. Bsp.: Sambucus, Robinia.','Leaflets in pairs along a central axis. E.g. Sambucus, Robinia.']);
-mi('f','dreizählig',()=>leafForm('drei'),['Folha trifoliolada','Dreizähliges Blatt','Trifoliate leaf'],['Três folíolos no mesmo ponto. Ex.: Trifolium.','Drei Teilblätter an einem Punkt. Bsp.: Trifolium.','Three leaflets from one point. E.g. Trifolium.']);
-mi('b','ganzrandig',()=>leafMargin('ent'),['Margem inteira','Ganzrandiger Rand','Entire margin'],['Borda lisa, sem dentes nem recortes.','Glatter Rand ohne Zähne oder Einschnitte.','Smooth edge, no teeth or cuts.']);
-mi('b','gesägt',()=>leafMargin('ser'),['Margem serrada','Gesägter Rand','Serrate margin'],['Dentes agudos inclinados para a ponta, como uma serra.','Spitze Zähne, die zur Blattspitze zeigen, wie eine Säge.','Sharp teeth pointing toward the tip, like a saw.']);
-mi('b','gezähnt',()=>leafMargin('den'),['Margem dentada','Gezähnter Rand','Dentate margin'],['Dentes simétricos que apontam para fora.','Gleichmäßige Zähne, die nach außen zeigen.','Symmetric teeth pointing outward.']);
-mi('b','gekerbt',()=>leafMargin('cre'),['Margem crenada','Gekerbter Rand','Crenate margin'],['Dentes arredondados com entalhes agudos entre eles.','Gerundete Zähne mit spitzen Einkerbungen dazwischen.','Rounded teeth with sharp notches between them.']);
-mi('b','gebuchtet',()=>leafMargin('sin'),['Margem sinuada','Gebuchteter Rand','Sinuate margin'],['Margem ondulada, com ondas rasas e arredondadas.','Welliger Rand mit flachen, runden Buchten.','Wavy margin with shallow, rounded waves.']);
-mi('b','gelappt',()=>leafMargin('lob'),['Margem lobada','Gelappter Rand','Lobed margin'],['Recortes profundos e arredondados formam lobos. Ex.: Quercus.','Tiefe, runde Einschnitte bilden Lappen. Bsp.: Quercus.','Deep, rounded cuts form lobes. E.g. Quercus.']);
-const inflo=k=>{const n1=v=>(+v).toFixed(1),F=(x,y,r=6)=>`<circle cx="${n1(x)}" cy="${n1(y)}" r="${r}" fill="#c87ed0" stroke="#9a58a6" stroke-width="1.5"/><circle cx="${n1(x)}" cy="${n1(y)}" r="${n1(r*.35)}" fill="#e6b422"/>`,
- Ln=(a,b,c,d,w=2,col='#6f8f4e')=>`<path d="M${n1(a)} ${n1(b)}L${n1(c)} ${n1(d)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/>`,ax=(y1,y2)=>Ln(100,y1,100,y2,3.5),rad=a=>a*Math.PI/180;let b='';
- if(k==='tra'){b=ax(165,24);[130,108,86,64,42].forEach((y,i)=>{const s=i%2?1:-1;b+=Ln(100,y,100+s*24,y-9)+F(100+s*24,y-9,6.5-i*.5)});b+=F(100,20,3.5)}
- if(k==='ae'){b=ax(165,22);for(let i=0;i<8;i++)b+=F(100+(i%2?6:-6),140-i*15,5.5-i*.25)}
- if(k==='dol'){b=ax(166,98);for(let i=0;i<7;i++){const a=rad(-160+i*23.3),x=100+Math.cos(a)*56,y=98+Math.sin(a)*56;b+=Ln(100,98,x,y)+F(x,y,6)}}
- if(k==='dd'){b=ax(166,106);for(let i=0;i<5;i++){const a=rad(-160+i*35),x=100+Math.cos(a)*50,y=106+Math.sin(a)*50;b+=Ln(100,106,x,y);for(let j=0;j<5;j++){const c=rad(-150+j*30),u=x+Math.cos(c)*20,v=y+Math.sin(c)*20;b+=Ln(x,y,u,v,1.5)+F(u,v,3.8)}}}
- if(k==='ris'){b=ax(165,22);[[138,46],[114,40],[90,34],[66,26],[44,18]].forEach(([y,L],i)=>{const s=i%2?1:-1;b+=Ln(100,y,100+s*L*.82,y-L*.57);const n=Math.max(1,Math.round(L/13));for(let j=1;j<=n;j++){const x=100+s*L*.82*j/n,yy=y-L*.57*j/n;b+=Ln(x,yy,x,yy-6,1.2)+F(x,yy-6,3.8)}});b+=F(100,16,3.5)}
- if(k==='kop'){const qy=t=>84-44*t*(1-t);b='';for(const[x,as]of[[54,[208,180,152]],[146,[-28,0,28]]])for(const a of as)b+=`<g transform="translate(${x} 82) rotate(${a})"><ellipse cx="21" rx="21" ry="7.5" fill="#fff" stroke="#9aa3a3" stroke-width="2"/></g>`;b+='<path d="M100 168V112" stroke="#6f8f4e" stroke-width="9" stroke-linecap="round"/><path d="M52 82C56 112 82 124 100 126C118 124 144 112 148 82C132 96 116 102 100 102C84 102 68 96 52 82Z" fill="#8fb06a" stroke="#5f7f40" stroke-width="2" stroke-linejoin="round"/><path d="M64 98l8 14M80 106l6 14M120 106l-6 14M136 98l-8 14" stroke="#5f7f40" stroke-width="1.4" stroke-linecap="round"/><path d="M52 82Q100 62 148 82C132 96 116 102 100 102C84 102 68 96 52 82Z" fill="#e9e2b0" stroke="#8aa66a" stroke-width="1.5"/>';for(let i=0;i<7;i++){const t=.14+i*.12;b+=F(52+96*t,qy(t)-14,5.2)}for(let i=0;i<9;i++){const t=.04+i*.115;b+=F(52+96*t,qy(t)-6,i%8?6.4:7.8)}}
- if(k==='kae'){b='<path d="M20 22Q100 14 182 24" stroke="#8a6a45" stroke-width="6" fill="none" stroke-linecap="round"/>';[[70,126],[116,108],[152,86]].forEach(([x,h])=>{b+=Ln(x,22,x,32,2.5,'#8a6a45')+`<rect x="${x-9}" y="32" width="18" height="${h-32}" rx="9" fill="#b9a867" stroke="#8a7a3c" stroke-width="2"/>`;for(let y=42;y<h-8;y+=9)b+=`<path d="M${x-9} ${y}Q${x} ${y+7} ${x+9} ${y}" stroke="#8a7a3c" stroke-width="1.5" fill="none"/>`})}
- if(k==='cor'){b=ax(165,56);[[130,-66],[118,60],[106,-46],[94,38],[82,-22],[72,14]].forEach(([y,dx])=>{b+=Ln(100,y,100+dx,48,1.8)+F(100+dx,48,6)});b+=F(100,46,6)}
- if(k==='cym'){const lf=(x,y,s)=>`<ellipse cx="${x+s*8}" cy="${y-2}" rx="8" ry="3.5" transform="rotate(${-s*25} ${x+s*8} ${y-2})" fill="#8fb06a" stroke="#6f8f4e" stroke-width="1"/>`;b=ax(166,38)+Ln(100,82,58,54)+Ln(100,82,142,54)+Ln(100,128,44,96)+Ln(100,128,156,96)+lf(100,82,-1)+lf(100,82,1)+lf(100,128,-1)+lf(100,128,1)+F(100,34,7)+F(58,54,6)+F(142,54,6)+F(44,96,5.5)+F(156,96,5.5)}
- if(k==='kol'){const sp='M100 14C122 38 138 72 135 110C132 142 120 164 100 164C80 164 68 142 65 110C62 72 78 38 100 14Z',dots=(rows,c,s)=>rows.map(([y,odd])=>(odd?[-3,3]:[-6,0,6]).map(x=>`<circle cx="${100+x}" cy="${y}" r="2.4" fill="${c}" stroke="${s}" stroke-width="1"/>`).join('')).join('');b=`<path d="${sp}" fill="#e3efc4" stroke="#6f8f4e" stroke-width="2.8" stroke-linejoin="round"/>`+Ln(100,150,100,96,4,'#8aa66a')+dots([[148],[142,1],[136]],'#c87ed0','#9a58a6')+dots([[128],[122,1],[116]],'#f6dc5a','#d0a820')+[104,107,110].map(y=>[-1,1].map(s=>`<path d="M${100+s*2} ${y}Q${100+s*8} ${y-1} ${100+s*12} ${y+8}" fill="none" stroke="#4f8a2a" stroke-width="1.4" stroke-linecap="round"/>`).join('')).join('')+'<path d="M97.5 98C96 88 91 74 91 56C91 42 94 34 100 34C106 34 109 42 109 56C109 74 104 88 102.5 98Z" fill="#8b5fa0" stroke="#5e3a70" stroke-width="2"/>'+Ln(100,172,100,162,6)}
- if(k==='wic'){const P=[];for(let i=0;i<=90;i++){const th=i/90*3.1*Math.PI,r=46*(1-th/(3.4*Math.PI))+4,a=Math.PI/2+th;P.push([100+r*Math.cos(a),78+r*Math.sin(a),a])}b=Ln(100,168,P[0][0],P[0][1],3.5)+`<path d="M${P.map(p=>n1(p[0])+' '+n1(p[1])).join('L')}" fill="none" stroke="#6f8f4e" stroke-width="3.5" stroke-linecap="round"/>`;for(let i=4;i<=88;i+=10){const [x,y,a]=P[i];b+=F(x+Math.cos(a)*9,y+Math.sin(a)*9,3.2+(1-i/95)*3.6)}}
- return`<svg viewBox="0 0 200 170" role="img" aria-label="Inflorescência">${b}</svg>`};
-Object.assign(QM,{i:['Que tipo de inflorescência é esta?','Welcher Blütenstand ist das?','What type of inflorescence is this?']});
-mi('i','Traube',()=>inflo('tra'),['Racemo (cacho)','Gestielte Blüten an einer Hauptachse','Raceme'],['Eixo central com flores de pedicelo curto ao longo dele; abre de baixo para cima. Ex.: Convallaria, Robinia.','Hauptachse mit gestielten Blüten; blüht von unten nach oben auf. Bsp.: Convallaria, Robinia.','Central axis with stalked flowers along it; opens from the bottom up. E.g. Convallaria, Robinia.']);
-mi('i','Ähre',()=>inflo('ae'),['Espiga','Ungestielte Blüten an einer Hauptachse','Spike'],['Como o racemo, mas as flores não têm pedicelo (são sésseis). Ex.: Plantago.','Wie die Traube, aber die Blüten sitzen ungestielt an der Achse. Bsp.: Plantago.','Like a raceme, but the flowers are stalkless (sessile). E.g. Plantago.']);
-mi('i','Dolde',()=>inflo('dol'),['Umbela simples','Blütenstiele entspringen an einem Punkt','Simple umbel'],['Todos os pedicelos partem do mesmo ponto, como as varetas de um guarda-chuva. Ex.: Primula veris, Allium ursinum.','Alle Blütenstiele entspringen an einem Punkt, wie die Streben eines Schirms. Bsp.: Primula veris, Allium ursinum.','All flower stalks start from one point, like the ribs of an umbrella. E.g. Primula veris, Allium ursinum.']);
-mi('i','Doppeldolde',()=>inflo('dd'),['Umbela composta','Dolde aus Döldchen','Compound umbel'],['Uma umbela cujos raios terminam em umbelas menores (umbélulas). Ex.: Daucus, Heracleum.','Eine Dolde, deren Strahlen in kleinen Döldchen enden. Bsp.: Daucus, Heracleum.','An umbel whose rays end in smaller umbels (umbellets). E.g. Daucus, Heracleum.']);
-mi('i','Rispe',()=>inflo('ris'),['Panícula','Verzweigte Traube','Panicle'],['Eixo ramificado em que cada ramo é um pequeno racemo. Ex.: Ligustrum, Poa.','Verzweigte Achse, bei der jeder Zweig eine kleine Traube ist. Bsp.: Ligustrum, Poa.','Branched axis in which each branch is a small raceme. E.g. Ligustrum, Poa.']);
-mi('i','Köpfchen',()=>inflo('kop'),['Capítulo','Viele Blüten auf einem gemeinsamen Blütenboden','Flower head (capitulum)'],['Muitas flores minúsculas num disco comum, que parecem uma só flor. Típico das Asteraceae: Bellis, Taraxacum.','Viele winzige Blüten auf einem gemeinsamen Boden, die wie eine Blüte wirken. Typisch für Asteraceae: Bellis, Taraxacum.','Many tiny flowers on a shared disc that look like a single flower. Typical of Asteraceae: Bellis, Taraxacum.']);
-mi('i','Kätzchen',()=>inflo('kae'),['Amentilho','Hängende Ähre mit unscheinbaren Blüten','Catkin'],['Espiga pendente de flores pequenas, geralmente unissexuais. Ex.: Corylus, Betula, Salix.','Hängende Ähre aus kleinen, meist eingeschlechtigen Blüten. Bsp.: Corylus, Betula, Salix.','Pendulous spike of small, usually unisexual flowers. E.g. Corylus, Betula, Salix.']);
-mi('i','Doldentraube',()=>inflo('cor'),['Corimbo','Traube mit flachem Abschluss','Corymb'],['Racemo de topo plano: os pedicelos de baixo são mais longos, e todas as flores ficam na mesma altura. Ex.: Sorbus, Crataegus.','Traube mit flachem Abschluss: untere Stiele sind länger, alle Blüten liegen auf einer Ebene. Bsp.: Sorbus, Crataegus.','Flat-topped raceme: lower stalks are longer, so all flowers sit at the same level. E.g. Sorbus, Crataegus.']);
-mi('i','Trugdolde',()=>inflo('cym'),['Cimeira','Endblüte öffnet zuerst','Cyme'],['A flor do topo abre primeiro; os ramos laterais saem abaixo dela, em geral aos pares. Ex.: Stellaria, Sambucus.','Die Endblüte öffnet zuerst; die Seitenzweige stehen darunter, meist paarweise. Bsp.: Stellaria, Sambucus.','The top flower opens first; side branches arise below it, usually in pairs. E.g. Stellaria, Sambucus.']);
-mi('i','Kolben',()=>inflo('kol'),['Espádice','Fleischige Achse mit Hochblatt (Spatha)','Spadix'],['Eixo carnudo com flores sésseis, em geral envolvido por uma espata. Ex.: Arum maculatum.','Fleischige Achse mit ungestielten Blüten, meist von einem Hochblatt (Spatha) umgeben. Bsp.: Arum maculatum.','Fleshy axis with stalkless flowers, usually wrapped by a spathe. E.g. Arum maculatum.']);
-mi('i','Wickel',()=>inflo('wic'),['Cimeira escorpioide (enrolada)','Eingerollte Achse, Blüten einseitig','Scorpioid cyme (coiled)'],['Eixo enrolado como um báculo, com flores de um só lado. Ex.: Echium, Myosotis.','Achse wie ein Krummstab eingerollt, Blüten auf einer Seite. Bsp.: Echium, Myosotis.','Axis coiled like a crozier, flowers on one side. E.g. Echium, Myosotis.']);
-const ml=m=>LANG==='de'?m.de:m.n[LI[LANG]];
-const GEN={};D.forEach(d=>{const g=d.sci.split(' ')[0];GEN[g]=GEN[g]||d.family});GEN.Prunus=GEN.Prunus||'Rosaceae';const SCI=new Set(D.map(d=>d.sci));
-const fmtTip=t=>t.replace(/\b([A-Z][a-z]+)( [a-z]{3,})?/g,(m,g,e)=>{if(!GEN[g])return m;if(e&&SCI.has(g+e))return`<i>${g+e}</i> [${GEN[g]}]`;return`<i>${g}</i> [${GEN[g]}]${e||''}`});
-const MDf=i=>{const m=MORPH[i],x=LI[LANG];return{sci:ml(m),pl:LANG==='de'?t('pl'):t('pg'),family:LANG==='de'?m.n[1]:'🇩🇪 '+m.de,memory:fmtTip(m.tip[x]),tipAll:1,nm:''}};
-const MLES=[[0,1,2,3,4,5,6],[7,8,9,10,11,12,13,14,15],[16,17,18,19,20,21],[22,23,24,25,26,27,28,29,30,31,32]],MN=['mnl','mnl2','mnl3','mnl4'];
-const morphNode=()=>{const first=MLES.findIndex((_,k)=>!S.done['m'+k]);return`<div class="unit b">${t('u2')}</div>`+MLES.map((ids,k)=>{const p=ids.reduce((a,i)=>a+(S.ms[i]||0),0)/(ids.length*5)*100,gold=p>=80;return`<div class="nodew" style="transform:translateX(${[0,40,0,-40][k]}px)">${k===first?`<div class="go">${t('new')}</div>`:''}<button class="node m ${gold?'gold':''}" style="--p:${p|0}" data-m="${k}" aria-label="${t(MN[k])}"><i>${gold?'★':['🌸','🍃','✂️','💐'][k]}</i></button><div class="nl">${t(MN[k])}</div></div>`}).join('')+`<div class="unit b">${t('u3')}</div><div class="nodew" style="transform:translateX(0px)"><button class="node m ${((FC.length&&FC.every((_,i)=>(S.cs[i]||0)>=3))?'gold':'')}" style="--p:${Math.round(FC.reduce((a,_,i)=>a+Math.min(5,S.cs[i]||0),0)/(FC.length*5)*100)}" data-c="1" aria-label="${t('u3')}"><i>🧩</i></button><div class="nl">${t('u3')}</div></div>`};
-const FC=[
- {f:'Asteraceae',features:[27,6],why:['Capítulo + roseta basal','Köpfchen + grundständige Blätter','Flower head + basal rosette']},
- {f:'Apiaceae',features:[25,3],why:['Umbela composta + folhas alternas','Doppeldolde + wechselständige Blätter','Compound umbel + alternate leaves']},
- {f:'Fabaceae',features:[15,14],why:['Folha trifoliolada + folha pinada','Dreizähliges + gefiedertes Blatt','Trifoliate + pinnately compound leaves']},
- {f:'Lamiaceae',features:[4,9],why:['Folhas opostas + folha cordada','Gegenständige Blätter + herzförmiges Blatt','Opposite leaves + heart-shaped leaf']},
- {f:'Plantaginaceae',features:[23,7],why:['Espiga + folha lanceolada','Ähre + lanzettliches Blatt','Spike + lanceolate leaf']},
- {f:'Rosaceae',features:[24,17],why:['Umbela simples + folha serrada','Dolde + gesägter Blattrand','Simple umbel + serrate margin']},
- {f:'Boraginaceae',features:[32,3],why:['Cimeira enrolada + folhas alternas','Wickel + wechselständige Blätter','Coiled cyme + alternate leaves']},
- {f:'Araceae',features:[31,2],why:['Espádice + ovário ínfero','Kolben + unterständiger Fruchtknoten','Spadix + inferior ovary']},
- {f:'Betulaceae',features:[28,3],why:['Amentilho + folhas alternas','Kätzchen + wechselständige Blätter','Catkin + alternate leaves']},
- {f:'Brassicaceae',features:[22,7],why:['Racemo + folha lanceolada','Traube + lanzettliches Blatt','Raceme + lanceolate leaf']},
- {f:'Ranunculaceae',features:[0,21],why:['Ovário súpero + margem lobada','Oberständiger Fruchtknoten + gelappter Rand','Superior ovary + lobed margin']},
- {f:'Caprifoliaceae',features:[26,4],why:['Panícula + folhas opostas','Rispe + gegenständige Blätter','Panicle + opposite leaves']}
-];
-// Manually curated observations selected by the instructor. Each number maps to the exact iNaturalist observation chosen for that species.
-const SELECTED_OBSERVATIONS = {"1":407764491,"2":390334698,"3":401282966,"4":406913950,"5":397858400,"6":386076781,"7":401061579,"8":408024932,"9":406978779,"10":406166426,"11":391194218,"12":402858342,"13":406605802,"14":407413471,"15":398784517,"16":407946449,"17":407030292,"18":406878042,"19":407367193,"20":406359843,"21":407357126,"22":406207412,"23":403031046,"24":402973036,"25":405191334,"26":407062864,"27":382992576,"28":370266652,"29":407611459,"30":400476829,"31":400709292,"32":407625815,"33":404318172,"34":384357039,"35":393663612,"36":406978830,"37":399454964,"38":405371922,"39":404702790,"40":362129343,"41":399483263,"42":407275286,"43":403677668,"44":407025403,"45":401946517,"46":406734927,"47":402963391,"48":406583198,"49":391887926,"50":406635968,"51":407562031,"52":407233687,"53":406398668,"54":408003901,"55":397560872,"56":157770017,"57":344737949,"58":407774329,"59":405242069,"60":201415105,"61":401208337,"62":407018881,"63":407992610,"64":405868246,"65":384488823,"66":404244426,"67":407376408,"68":407764801,"69":405069171,"70":408025228,"71":304477127,"72":399311222,"73":405026551,"74":406010320,"75":403226890,"76":406018705,"77":382705237,"78":406742429,"79":401679569,"80":405824982,"81":395020268,"82":407764700,"83":406138293,"84":406978829,"85":406129027,"86":401581896,"87":407780237,"88":406322876,"89":404728632,"90":399168030,"91":407056920,"92":408059945,"93":407577363,"94":407617775,"95":404686490,"96":403678842,"97":407206098,"98":405300357,"99":407072288,"100":394758026};
-const IC=new Map();
-async function imgFor(d){
- if(IC.has(d.n))return IC.get(d.n);
- const clean=d.sci.replace(/\s*\(Beispiel\)/ig,'').replace(/\s+s\.l\.$/i,'').trim();
- const p=(async()=>{
-  const usablePhoto=async(photo,obs)=>{
-   let src=photo?.url||'';if(!src)return null;
-   src=src.replace('/square.','/large.').replace('/small.','/large.').replace('/medium.','/large.');
-   const ok=await new Promise(resolve=>{const im=new Image();im.onload=()=>resolve(true);im.onerror=()=>resolve(false);im.src=src});
-   return ok?{src,credit:obs?.user?.login||'',license:photo?.license_code||'',url:obs?.id?'https://www.inaturalist.org/observations/'+obs.id:''}:null;
-  };
-  // First try the instructor-selected observation and test each attached photo.
-  try{
-   const selectedId=SELECTED_OBSERVATIONS[String(d.n)];
-   if(selectedId){
-    const res=await fetch('https://api.inaturalist.org/v1/observations/'+selectedId);
-    if(res.ok){const data=await res.json();const obs=Array.isArray(data.results)?data.results[0]:(data&&data.id?data:null);
-     for(const photo of (obs?.photos||[])){const result=await usablePhoto(photo,obs);if(result)return result;}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>João de Deus Vidal Jr | Biodiversity Researcher Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #0f766e;
+      --accent: #d97706;
+      --dark: #1e293b;
+      --light: #f9fafb;
+      --gray: #64748b;
+      --gray-light: #e5e7eb;
+      --white: #ffffff;
+      --card-shadow: 0 10px 20px rgba(0,0,0,0.08), 0 6px 6px rgba(0,0,0,0.05);
+      --card-shadow-hover: 0 14px 28px rgba(0,0,0,0.12), 0 10px 10px rgba(0,0,0,0.08);
+      --transition: all 0.3s ease;
     }
-   }
-  }catch(e){}
-  // If the selected observation is temporarily unavailable or has no usable image,
-  // fall back to the previous working taxon-based iNaturalist search.
-  try{
-   const params=new URLSearchParams({taxon_name:clean,quality_grade:'research',photos:'true',order_by:'votes',order:'desc',per_page:'30',photo_license:'CC-BY,CC-BY-SA,CC-BY-NC,CC-BY-NC-SA'});
-   const res=await fetch('https://api.inaturalist.org/v1/observations?'+params.toString());
-   if(res.ok){const data=await res.json();const rows=(data.results||[]).filter(o=>o.photos&&o.photos.length);
-    rows.sort((a,b)=>Number((b.taxon?.name||'').toLowerCase()===clean.toLowerCase())-Number((a.taxon?.name||'').toLowerCase()===clean.toLowerCase()));
-    for(const obs of rows){for(const photo of (obs.photos||[])){
-     if(photo.license_code&&!['cc-by','cc-by-sa','cc-by-nc','cc-by-nc-sa','cc0'].includes(photo.license_code))continue;
-     const result=await usablePhoto(photo,obs);if(result)return result;
-    }}
-   }
-  }catch(e){}
-  return null;
- })();
- IC.set(d.n,p);const result=await p;if(!result)IC.delete(d.n);return result;
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    /* Skip link for accessibility */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--primary);
+      color: white;
+      padding: 8px;
+      z-index: 1000;
+      transition: top 0.3s;
+    }
+    
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Header styles */
+    header {
+      background: linear-gradient(135deg, var(--dark) 0%, #2d3748 100%);
+      color: white;
+      padding: 3rem 1rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23ffffff' fill-opacity='0.03' d='M0,128L48,117.3C96,107,192,85,288,112C384,139,480,213,576,218.7C672,224,768,160,864,138.7C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .header-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .profile-container {
+      text-align: center;
+    }
+
+    header img {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 5px solid rgba(255, 255, 255, 0.2);
+      object-fit: cover;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      transition: var(--transition);
+    }
+
+    header img:hover {
+      transform: scale(1.03);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    header h1 {
+      margin: 0.5rem 0 0.2rem;
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+      font-weight: 300;
+    }
+
+    .bio p {
+      margin: 1rem 0;
+      color: #cbd5e1;
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .bio a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .bio a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #38bdf8;
+      transition: width 0.3s ease;
+    }
+
+    .bio a {
+  color: #38bdf8;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  font-weight: 600;
+  transition: text-decoration-color 0.3s ease;
+  /* Remove position: relative */
 }
-function makeQ(i,retry,m,slot){if(m===2){const c=FC[i];return{i,type:'combo',opts:shuf([c.f,...shuf(fams.filter(f=>f!==c.f)).slice(0,3)]),ans:c.f,retry}}if(m===1){const mm=MORPH[i];return{i,type:'morph',opts:shuf([ml(mm),...shuf(MORPH.filter(x=>x.g===mm.g&&x!==mm)).slice(0,3).map(ml)]),ans:ml(mm),retry}}const d=D[i],s=S.str[i]||0,r=Math.random();
- // Guarantee a mix of question formats within every species lesson; retries can vary normally.
- const type=slot!==undefined?['photo','de','fam','diag'][slot%4]:(s===0?(r<.7?'photo':'de'):r<.35?'photo':r<.55?'de':r<.8?'fam':'diag');let ans,opts;
- if(type==='fam'){ans=d.family;opts=[ans,...shuf(fams.filter(f=>f!==ans)).slice(0,3)]}
- else{ans=d.sci;const same=shuf(D.filter(x=>x!==d&&x.family===d.family)).slice(0,2),rest=shuf(D.filter(x=>x!==d&&!same.includes(x)));opts=[ans,...same.concat(rest).slice(0,3).map(x=>x.sci)]}
- return{i,type,opts:shuf(opts),ans,retry}}
-let L;
-function start(ids,k,m){L={ids,k,m,queue:shuf(ids).map((i,slot)=>makeQ(i,0,m,slot)),hearts:5,ok:0,miss:0,xp:0,got:new Set(),sel:null,checked:false};show('lesson');nextQ()}
-function nextQ(){if(!L.queue.length)return finish(true);L.cur=L.queue.shift();renderQ();const n=L.queue[0];if(n&&n.type==='photo')imgFor(D[n.i])}
-function head(){$('#pb').style.width=(L.got.size/L.ids.length*100)+'%';$('#hp').textContent='❤️ '+L.hearts}
-async function renderQ(){const q=L.cur,d=D[q.i];L.sel=null;L.checked=false;head();foot();
- const qa=$('#qa'),sc=q.type!=='fam';let top='';
- if(q.type==='morph'){const m=MORPH[q.i];top=`<div class="q">${QM[m.g][LI[LANG]]}</div><div class="pic">${m.svg()}</div>`}
- if(q.type==='combo'){const c=FC[q.i];top=`<div class="q">${t('qcombo')}</div><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">${c.features.map(i=>`<div class="bubble" style="padding:8px;text-align:center"><div class="pic" style="height:145px;border:0">${MORPH[i].svg()}</div><small>${MORPH[i].n[LI[LANG]]}</small></div>`).join('')}</div>`}
- if(q.type==='de')top=`<div class="q">${t('qd')}</div><div class="big">🇩🇪 ${d.common_de}${LANG==='de'?'':`<small>${FL[LANG]} ${d['common_'+LANG]}</small>`}</div>`;
- if(q.type==='fam')top=`<div class="q">${t('qf')}</div><div class="big sci">${d.sci}</div>`;
- if(q.type==='diag')top=`<div class="q">${t('qg')}</div><div class="bubble">${d.diag[LANG]}</div>`;
- if(q.type==='photo'){qa.innerHTML=`<div class="q">${t('qp')}</div><div class="pic" id="pic">🌿</div>`;const photo=await imgFor(d);if(L.cur!==q)return;if(!photo){
- // Keep the scientific-name question coherent if no photograph can be retrieved.
- q.type='de';q.ans=d.sci;const alternatives=shuf(D.filter(x=>x!==d&&x.sci!==d.sci)).slice(0,3).map(x=>x.sci);q.opts=shuf([q.ans,...alternatives]);return renderQ()
- }const src=typeof photo==='string'?photo:photo.src;const credit=typeof photo==='object'&&photo.credit?` · © ${photo.credit}`:'';const link=typeof photo==='object'&&photo.url?photo.url:'';top=`<div class="q">${t('qp')}</div><div class="pic photo"><img src="${src}" alt="${t('alt')}" loading="eager"></div>${link?`<div class="photo-credit"><a href="${link}" target="_blank" rel="noopener noreferrer">iNaturalist observation${credit}</a>${photo.license?` · ${photo.license}`:''}</div>`:''}`}
- qa.innerHTML=top+`<div class="opts">${q.opts.map((o,k)=>`<button class="opt ${sc?'i':''}" data-k="${k}"><kbd>${k+1}</kbd>${sc?'':`<b class="dot" style="--h:${hh(o)}"></b>`}<span>${o}</span></button>`).join('')}</div>`;
- qa.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.k))}
-function pick(k){if(L.checked)return;L.sel=k;document.querySelectorAll('.opt').forEach((b,i)=>b.classList.toggle('sel',i===k));const c=$('#chk');if(c)c.disabled=false}
-function foot(d,good){const f=$('#foot');if(!d){f.className='lf';f.innerHTML='<button class="btn" id="chk" disabled>'+t('check')+'</button>';$('#chk').onclick=check;return}
- f.className='lf '+(good?'ok':'bad');const w=t('good');
- f.innerHTML=`<div class="fbh">${good?w[Math.random()*4|0]:t('right')}</div><div class="sci">${d.sci}</div><div class="fam" style="--h:${hh(d.family)}"><small>${d.pl||t('fam')}</small>${d.family}</div><div class="nm">${d.nm??names(d)}</div>${d.tipAll||LANG==='pt'?`<div class="tip">💡 ${d.memory}</div>`:''}${d.diag?`<details><summary>${t('how')}</summary><p>${d.diag[LANG]}</p></details>`:''}<button class="btn ${good?'':'red'}" id="cont">${t('cont')}</button>`;
- $('#cont').onclick=cont;f.scrollTop=0}
-function check(){if(L.sel==null||L.checked)return;L.checked=true;const q=L.cur,C=L.m===2,M=q.type==='morph',d=C?{sci:FC[q.i].f,pl:t('fam'),family:FC[q.i].f,memory:FC[q.i].why[LI[LANG]],tipAll:1,nm:''}:M?MDf(q.i):D[q.i],T=C?S.cs:M?S.ms:S.str,good=q.opts[L.sel]===q.ans;
- document.querySelectorAll('.opt').forEach((b,i)=>{b.classList.remove('sel');if(q.opts[i]===q.ans)b.classList.add('ok');else if(i===L.sel)b.classList.add('bad')});
- if(good){L.ok++;L.got.add(q.i);L.xp+=q.retry?5:10;if(!q.retry)T[q.i]=Math.min(5,(T[q.i]||0)+1);else T[q.i]=T[q.i]||0;beep(660);setTimeout(()=>beep(880),90)}
- else{L.miss++;L.hearts--;T[q.i]=Math.max(0,(T[q.i]||0)-1);L.queue.push(makeQ(q.i,true,L.m));beep(200,.25,'sawtooth')}
- save();head();foot(d,good)}
-function cont(){if(L.hearts<=0)return finish(false);nextQ()}
-function finish(win){const acc=L.ok+L.miss?Math.round(L.ok/(L.ok+L.miss)*100):0;
- if(win){if(!L.miss)L.xp+=10;S.xp+=L.xp;if(L.k!==-1)S.done[L.k]=true;if(S.last!==day()){S.streak=S.last===yest()?S.streak+1:1;S.last=day()}}save();
- $('#rE').textContent=win?'🏆':'💔';$('#rT').textContent=win?t('done'):t('noh');$('#rS').textContent=win?(L.miss?t('ok1'):t('ok0')):t('fail');
- $('#rTi').innerHTML=`<div class="tile t1"><small>XP</small>⚡ ${win?L.xp:0}</div><div class="tile t2"><small>${t('acc')}</small>🎯 ${acc}%</div><div class="tile t3"><small>${t('strk')}</small>🔥 ${streakNow()}</div>`;
- $('#rL').innerHTML=L.ids.map(i=>{const d=L.m===2?{sci:FC[i].f,family:FC[i].f}:L.m===1?MDf(i):D[i];return`<div class="rs"><i>${d.sci}</i><span style="--h:${hh(d.family)}">${d.family}</span></div>`}).join('');show('res')}
-$('#rB').onclick=()=>show('home');$('#quit').onclick=()=>{$('#qm').hidden=false;$('#qk').focus()};$('#qk').onclick=()=>{$('#qm').hidden=true};$('#qe').onclick=()=>{$('#qm').hidden=true;show('home')};
-document.addEventListener('keydown',e=>{if(!$('#lesson').classList.contains('on'))return;if(!$('#qm').hidden){if(e.key==='Escape')$('#qm').hidden=true;return}if(e.key==='Enter'){e.preventDefault();L.checked?cont():check()}else if(/^[1-4]$/.test(e.key))pick(+e.key-1)});
-applyLang();show('home');
-</script></body></html>
+
+.bio a:hover {
+  text-decoration-color: #38bdf8;
+}
+
+    /* Carousel - Updated */
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      height: 300px;
+      border-radius: 0; /* Remove any rounded corners */
+    }
+
+    .carousel {
+      display: flex;
+      transition: transform 0.5s ease;
+      height: 100%;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+      display: block; /* Make the anchor tag behave like a div */
+      text-decoration: none; /* Remove underline from link */
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0; /* Remove any rounded corners from images */
+    }
+
+    .slide-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      color: white;
+      padding: 1.5rem;
+      transition: var(--transition);
+    }
+
+    .carousel-slide:hover .slide-content {
+      background: linear-gradient(transparent, rgba(30, 41, 59, 0.9));
+    }
+
+    .slide-content h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+
+    .slide-content p {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      backdrop-filter: blur(5px);
+      z-index: 10; /* Ensure buttons are above the links */
+    }
+
+    .carousel-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .carousel-btn.prev {
+      left: 15px;
+    }
+
+    .carousel-btn.next {
+      right: 15px;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 15px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      z-index: 10; /* Ensure dots are above the links */
+    }
+
+    .carousel-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .carousel-dot.active {
+      background: white;
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 768px) {
+      .carousel-container {
+        height: 200px;
+      }
+      
+      .slide-content {
+        padding: 1rem;
+      }
+      
+      .slide-content h3 {
+        font-size: 1rem;
+      }
+      
+      .slide-content p {
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Navigation */
+    nav {
+      background-color: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      padding: 0;
+    }
+
+    .nav-links li {
+      margin: 0;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: 1rem 1.5rem;
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus {
+      color: var(--primary);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 3px;
+      background-color: var(--primary);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus::after {
+      width: 80%;
+    }
+
+    /* Main content */
+    .container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    section {
+      margin-bottom: 4rem;
+      scroll-margin-top: 80px;
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 2rem;
+      color: var(--dark);
+      font-size: 1.8rem;
+      position: relative;
+      padding-bottom: 0.75rem;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+
+    /* Grid and cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: var(--transition);
+      height: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .card-icon {
+      padding: 1.5rem 1.5rem 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card i {
+      font-size: 3.5rem;
+      color: var(--primary);
+      transition: var(--transition);
+    }
+
+    .card:hover i {
+      color: var(--secondary);
+      transform: scale(1.1);
+    }
+
+    .card-content {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .card-content h3 {
+      margin: 0.5rem 0;
+      font-size: 1.3rem;
+      color: var(--dark);
+    }
+
+    .card-content p {
+      font-size: 0.95rem;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .card-content a {
+      display: inline-flex;
+      align-items: center;
+      margin-top: auto;
+      padding: 0.6rem 1.2rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      align-self: flex-start;
+    }
+
+    .card-content a:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .card-content a i {
+      font-size: 1rem;
+      margin-left: 0.5rem;
+      color: white;
+    }
+
+    /* Publications */
+    .publications-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .publications-list li {
+      margin-bottom: 1.5rem;
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+      transition: var(--transition);
+      border-left: 4px solid transparent;
+    }
+
+    .publications-list li:hover {
+      transform: translateX(5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      border-left-color: var(--primary);
+    }
+
+    .publications-list a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .publications-list a:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+
+    .pub-year {
+      display: inline-block;
+      background: var(--gray-light);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-right: 0.5rem;
+    }
+
+    /* Filter buttons for publications */
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      background: var(--gray-light);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Contact Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .contact-card {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .contact-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .contact-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-icon i {
+      font-size: 2rem;
+      color: white;
+    }
+
+    .contact-card h3 {
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+
+    .contact-info {
+      margin-bottom: 1.5rem;
+      color: var(--gray);
+    }
+
+    .contact-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .contact-link:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+
+    .metrics {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .metric {
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--gray);
+      margin-top: 4rem;
+      background: var(--dark);
+      color: white;
+    }
+
+    footer p {
+      opacity: 0.8;
+    }
+
+    /* Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: var(--transition);
+      opacity: 0;
+      visibility: hidden;
+      z-index: 99;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+    }
+
+    /* Responsive design */
+    @media (max-width: 968px) {
+      .header-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      
+      .carousel-container {
+        height: 250px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 2rem 1rem 3rem;
+      }
+      
+      header h1 {
+        font-size: 2rem;
+      }
+      
+      .tagline {
+        font-size: 1.1rem;
+      }
+      
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .nav-links a {
+        padding: 0.8rem 1rem;
+      }
+      
+      .grid, .contact-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .container {
+        padding: 0 1.5rem;
+      }
+      
+      .metrics {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .carousel-container {
+        height: 200px;
+      }
+      
+      .slide-content {
+        padding: 1rem;
+      }
+      
+      .slide-content h3 {
+        font-size: 1rem;
+      }
+      
+      .slide-content p {
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Animation for sections */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+	.new-publication {
+  position: relative;
+  padding-left: 60px; /* space for badge */
+}
+
+.badge-new {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #ff4757;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+    /* Focus styles for accessibility */
+    a:focus,
+    button:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <header>
+    <div class="header-content">
+      <div class="profile-container">
+        <img src="https://i1.rgstatic.net/ii/profile.image/11431281598451757-1755687092187_Q512/Joao-Vidal-9.jpg" alt="JD Vidal">
+        <h1>Dr João de Deus Vidal Jr</h1>
+        <p class="tagline">Postdoctoral researcher | Biodiversity Informatics | Macroecology</p>
+        
+        <div class="bio">
+           <p>I am a postdoctoral researcher at the <strong>Leipzig University</strong>, Germany.
+			  My research interests are unveiling the underlying mechanisms shaping the geographic distribution of Tropical mountain plants.
+			  I have expertise in macroecology, taxonomy, population genetics, and biogeography.
+			  I am a member of the <a href="https://www.humboldt-foundation.de/en/connect/explore-the-humboldt-network/singleview/1221321/dr-joao-de-deus-vidal-jr">Alexander von Humboldt Stiftung alumni network</a>, <a href="https://www.idiv.de/research/idiv-members/"> Deutsche Zentrum für integrative Biodiversitätsforschung (iDiv) Halle-Jena-Leipzig</a>, and the International Biogeography Society.
+			  Currently editing a special issue of Frontiers in Ecology & Evolution on <a href="https://www.frontiersin.org/research-topics/67182/impacts-and-adaptations-in-montane-ecosystems-facing-climate-change">Impacts and Adaptations in Montane Ecosystems Facing Climate Change </a>.
+			  <br>
+			  <br>
+          <a href="https://scholar.google.com/citations?user=PLmmm4QAAAAJ&hl=en">Google Scholar</a> | <a href="http://lattes.cnpq.br/7749648916918012">Lattes</a> | <a href="https://www.linkedin.com/in/jo%C3%A3o-de-deus-vidal-jr-62b48914b/">LinkedIn</a> </p>
+
+        </div>
+      </div>
+      
+      <div class="carousel-container">
+  <div class="carousel">
+    <a href="https://doi.org/10.1016/B978-0-12-409548-9.11885-8" target="_blank" class="carousel-slide">
+      <img src="https://www.researchgate.net/publication/334062534/figure/fig1/AS:781537884770306@1563344560614/The-Afro-alpine-Zone-in-tropical-Africa-A-Eastern-Africa-B-Western-Africa-Based-on_W640.jpg" alt="Afro-alpine Zone in tropical Africa">
+      <div class="slide-content">
+        <h3>Afro-Alpine Plant Diversity</h3>
+        <p>Geographic distribution of Afro-alpine zones in tropical Africa</p>
+      </div>
+    </a>
+    <a href="https://doi.org/10.1016/B978-0-12-409548-9.11885-8" target="_blank" class="carousel-slide">
+      <img src="https://www.researchgate.net/publication/334062534/figure/fig3/AS:781538035785733@1563344596210/Orogeny-of-the-14-Afro-alpine-host-mountains-in-tropical-Africa-data-from-Burke-K_W640.jpg" alt="Orogeny of Afro-alpine mountains">
+      <div class="slide-content">
+        <h3>Mountain Orogeny</h3>
+        <p>Geological history of the 14 Afro-alpine host mountains in tropical Africa</p>
+      </div>
+    </a>
+    <a href="https://doi.org/10.3389/fevo.2021.760118" target="_blank" class="carousel-slide">
+      <img src="https://www.frontiersin.org/files/Articles/760118/fevo-09-760118-HTML/image_m/fevo-09-760118-g002.jpg" alt="C3-C4 Grass-Line">
+      <div class="slide-content">
+        <h3>Beyond the Tree-Line</h3>
+        <p>The C3-C4 "Grass-Line" can track global change in high altitude ecosystems</p>
+      </div>
+    </a>
+    <a href="https://doi.org/10.3389/fcosc.2022.763325" target="_blank" class="carousel-slide">
+      <img src="https://www.frontiersin.org/files/Articles/763325/fcosc-03-763325-HTML/image_m/fcosc-03-763325-g002.jpg" alt="Differential Adaptive Potential">
+      <div class="slide-content">
+        <h3>Mangrove Adaptation</h3>
+        <p>Differential adaptive potential in Brazilian mangroves under climate change</p>
+      </div>
+    </a>
+  </div>
+  
+  <button class="carousel-btn prev">
+    <i class="ri-arrow-left-s-line"></i>
+  </button>
+  <button class="carousel-btn next">
+    <i class="ri-arrow-right-s-line"></i>
+  </button>
+  
+  <div class="carousel-dots">
+    <span class="carousel-dot active"></span>
+    <span class="carousel-dot"></span>
+    <span class="carousel-dot"></span>
+    <span class="carousel-dot"></span>
+  </div>
+</div>
+      </div>
+    </div>
+  </header>
+  <nav>
+    <div class="nav-container">
+      <ul class="nav-links">
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="#tutorials">R Tutorials</a></li>
+        <li><a href="#shiny">Shiny Apps</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main-content" class="container">
+    <section id="publications" class="fade-in">
+      <h2>Publications</h2>
+      
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All Publications</button>
+		<button class="filter-btn" data-filter="2026">2026</button>
+        <button class="filter-btn" data-filter="2025">2025</button>
+        <button class="filter-btn" data-filter="2024">2024</button>
+		<button class="filter-btn" data-filter="2023">2023</button>
+        <button class="filter-btn" data-filter="2022">2022</button>
+        <button class="filter-btn" data-filter="2021">2021</button>
+        <button class="filter-btn" data-filter="2020">2020</button>
+        <button class="filter-btn" data-filter="2019">2019</button>
+        <button class="filter-btn" data-filter="2018">2018</button>
+      </div>
+      
+      <ul class="publications-list">
+		  
+  <!-- 2026 NEW PUBLICATIONS -->
+	<li data-year="2026" class="new-publication">
+    <span class="badge-new">New!</span>
+    <span class="pub-year">2026</span>
+    Lelouvier, R.; Schneiderbauer, S.; Collins, S.; Moikwatlhai, B.; Vidal Jr, J.; Jacobs, L.; Ralph Clark, V. (2026).
+   Towards a multilateral ‘Southern African Mountain Treaty/Convention’–a contribution to the Southern African Development Community Vision 2050. <em>Transactions of the Royal Society of South Africa</em>, 28, 1-13. 
+    <a href="https://doi.org/10.1080/0035919X.2026.2661548" target="_blank">DOI</a>
+  </li>
+
+	<li data-year="2026" class="new-publication">
+    <span class="badge-new">New!</span>
+    <span class="pub-year">2026</span>
+	Abdulkadir, M.; Bello, A.; Abdulkadir, S.; Tajuddeen, A.; Wada, N.; Haruna, M.; Kankara, S.; Vidal Jr., J.; Muellner-Riehl, A. (2026). 
+    Medicinal Flora of the Umaru Musa Yar'adua University Herbarium: A Taxonomic Survey.
+    <em>Feddes Repertorium</em>, 137(2), e70114.
+    <a href="https://doi.org/10.1002/fedr.70114" target="_blank">DOI</a>
+  </li> 
+		  
+  <li data-year="2026" class="new-publication">
+    <span class="badge-new">New!</span>
+    <span class="pub-year">2026</span>
+    Clark, V.; Vidal Jr., J.; Barker, Nigel P. (2026). 
+    <em>Acmadenia kamdeboo</em> (Rutaceae: Diosmeae)—A new species endemic to the Kamdebooberge, Sneeuberg Massif (Eastern Cape, South Africa). 
+    <em>South African Journal of Botany</em>, 188, 374–380.
+    <a href="https://doi.org/10.1016/j.sajb.2026.01.041" target="_blank">DOI</a>
+  </li>
+
+  <li data-year="2026" class="new-publication">
+    <span class="badge-new">New!</span>
+    <span class="pub-year">2026</span>
+    Münder, N.; Fremout, T.; Bello, A.; Oluoch, W. A.; Schmitt, C. B.; Muellner-Riehl, A. N.; Vidal Junior, João de Deus. (2026). 
+    Hotspots of timber species declines in Nigeria: evidence from species distribution models under climate and land use change. 
+    <em>Regional Environmental Change</em>, 26(1), 26.
+    <a href="https://doi.org/10.1007/s10113-026-02529-7" target="_blank">DOI</a>
+  </li>
+
+  <li data-year="2026" class="new-publication">
+    <span class="badge-new">New!</span>
+    <span class="pub-year">2026</span>
+    Clark, V.; Vidal Jr., J.; Gwynne-Evans, D.; Barker, Nigel P. (2026). 
+    Two new endemic species of <em>Hermannia</em> L. (Malvaceae: Byttnerioideae)—<em>H. lilacina</em> and <em>H. boschbergensis</em>—from the Cape Midlands Escarpment (Eastern Cape, South Africa). 
+    <em>South African Journal of Botany</em>, 190, 618–629.
+    <a href="https://doi.org/10.1016/j.sajb.2025.11.012" target="_blank">DOI</a>
+  </li>
+
+  <!-- 2025 PUBLICATIONS -->
+  <li data-year="2025">
+    <span class="pub-year">2025</span>
+    Mapaura, A.; Canavan, K.; Richardson, D. M.; Vidal Jr., J. D.; Clark, V. R.; Steenhuisen, S. (2025). 
+    Implications of Climate Change for the Distribution of Nassella Grass in South Africa and Lesotho.
+    <em>Rangeland Ecology and Management</em>.
+  </li>
+
+  <li data-year="2025">
+    <span class="pub-year">2025</span>
+    Pepin, N.; Apple, M.; Knowles, J.; Terzago, S.; Arnone, E.; Hanchen, L.; Steiner, J.; Williamson, S.; Ahrens, B.; Dhar, T.; Dimri, A.; Napoli, A.; Palazzi, E.; Potter, E.; Rameshan, A.; Salzmann, N.; Shahgedanova, M.; Vidal, J. D.; Zardi, D. (2025). 
+    Elevation Dependent Climate Change in Mountain Environments. 
+    <em>Nature Reviews Earth & Environment</em>.
+  </li>
+
+  <li data-year="2025">
+    <span class="pub-year">2025</span>
+    Baracat, A. F.; Nunes, C. E. P.; Pinheiro, P. M.; Vidal Jr., J. de D. (2025). 
+    Combining distribution models of plants and their mutualists to map gaps in the knowledge of ecological interactions. 
+    <em>Diversity and Distributions</em>.
+  </li>
+
+  <li data-year="2025">
+    <span class="pub-year">2025</span>
+    Vidal Jr., J. D.; Antonelli, A.; Carbutt, C.; Clark, V. R.; Fremout, T.; Chapano, C.; Chelene, I.; Chuba, D.; Gole, T. W.; Langa, C.; Loeuille, B. F. P.; Molla, E. L.; Pearce, T.; Plumptree, A.; Senbeta, F.; Tovar, C.; White, J. D. M.; Schmitt, C. (2025). 
+    Late 21st-century climate and land use driven loss of plant diversity in African mountains. 
+    <em>Global Change Biology</em>, 31(9). 
+    <a href="https://onlinelibrary.wiley.com/doi/10.1111/gcb.70492" target="_blank">DOI</a>
+  </li>
+
+        <li data-year="2024"><span class="pub-year">2024</span>Oluoch, W. A., Borgemeister, C., de Deus Vidal Junior, J., ... (2024). Predicted changes in wild edible plants under climate change. <em>Regional Environmental Change</em>, 24(1), 11. <a href="https://doi.org/10.1007/s10113-023-02175-3" target="_blank">DOI</a></li>
+        <li data-year="2024"><span class="pub-year">2024</span>Schmitt, C. B., & Vidal, J. de D. (2024). Global Patterns of Biodiversity in Forests. In <em>Routledge Handbook of Forest Ecology</em> (2nd ed.). Routledge.</li>
+        <li data-year="2024"><span class="pub-year">2024</span>de Moura, Y. A., Aono, A. H., Cruz, M. V., ... (2024). Molecular attributes of Avicennia schaueriana under low temperatures. <em>bioRxiv</em>.</li>
+        <li data-year="2024"><span class="pub-year">2024</span>Sieben, E., Steenhuisen, S., Vidal, J., ... (2024). Modelling occurrences of common grassland species. <em>Plant Ecology</em>, 225(10), 1095–1108.</li>
+        <li data-year="2023"><span class="pub-year">2023</span>de Deus Vidal, J., Jr, Schmitt, C. B., & Koch, I. (2024). Comparative richness patterns of range sizes and life forms of Apocynaceae along forest–savanna transitions in Brazil. <em>Botanical Journal of the Linnean Society</em>, 204(3), 230–241. <a href="https://doi.org/10.1093/botlinnean/boad047" target="_blank">DOI</a></li>
+        <li data-year="2022"><span class="pub-year">2022</span>BFG, Gomes-da-Silva, J., Filardi, F. L., Barbosa, M. R. V., ... (2022). Brazilian Flora 2020: Leveraging the power of a collaborative scientific network. <em>Taxon</em>, 71(1), 178–198.</li>
+        <li data-year="2022"><span class="pub-year">2022</span>de Deus Vidal Junior, J., Mori, G. M., Cruz, M. V., ... (2022). Differential Adaptive Potential in Brazilian Mangroves. <em>Frontiers in Conservation Science</em>, 3. <a href="https://doi.org/10.3389/fcosc.2022.763325" target="_blank">DOI</a></li>
+        <li data-year="2021"><span class="pub-year">2021</span>Clark, V. R., Mukwada, G., Hansen, M., ... (2021). The Afromontane Research Unit: Driving connections and capacity building. <em>Mountain Research and Development</em>, 41(2), P1.</li>
+        <li data-year="2021"><span class="pub-year">2021</span>Da Silva, M. F., Cruz, M. V., Vidal Júnior, J. D. D., ... (2021). Geographical and environmental contributions to genomic divergence in mangrove forests. <em>Biological Journal of the Linnean Society</em>, 132(3), 573–589.</li>
+        <li data-year="2021"><span class="pub-year">2021</span>Delves, J. L., Clark, V. R., Schneiderbauer, S., ... (2021). Multidimensional Challenges in the Maloti-Drakensberg. <em>Sustainability</em>, 13(15), 8511.</li>
+        <li data-year="2021"><span class="pub-year">2021</span>De Deus Vidal, J., Le Roux, P. C., Johnson, S. D., ... (2021). Beyond the Tree-Line: The C3-C4 "Grass-Line" Can Track Global Change. <em>Frontiers in Ecology and Evolution</em>, 9, 760118. <a href="https://doi.org/10.3389/fevo.2021.760118" target="_blank">DOI</a></li>
+        <li data-year="2020"><span class="pub-year">2020</span>De Deus Vidal, J., & Clark, V. R. (2020). Afro-Alpine Plant Diversity in the Tropical Mountains of Africa. In <em>Encyclopedia of the World's Biomes</em> (pp. 373–394). Elsevier. <a href="https://doi.org/10.1016/B978-0-12-409548-9.11885-8" target="_blank">DOI</a></li>
+        <li data-year="2020"><span class="pub-year">2020</span>Timberlake, J., Ballings, P., Vidal Jr., J. de D., ... (2020). Mountains of the Mist: A checklist for the Bvumba Mountains. <em>PhytoKeys</em>, 145, 93–129. <a href="https://doi.org/10.3897/phytokeys.145.49257" target="_blank">DOI</a></li>
+        <li data-year="2019"><span class="pub-year">2019</span>Clark, V. R., Vidal, J. de D., Grundy, I. M., ... (2019). Bridging the divide between social-ecological value and sustainability in the Manica Highlands. <em>Ecosystem Services</em>, 39, 100999. <a href="https://doi.org/10.1016/j.ecoser.2019.100999" target="_blank">DOI</a></li>
+        <li data-year="2019"><span class="pub-year">2019</span>Cortez, M. B. D. S., Sforca, D. A., Alves, F. D. M., ... (2019). Elucidating the Clusia criuva species complex. <em>Botanical Journal of the Linnean Society</em>, 190(1), 67–82.</li>
+        <li data-year="2019"><span class="pub-year">2019</span>de Deus Vidal Jr., J., de Souza, A. P., & Koch, I. (2019). Impacts of landscape composition on woody plant endemism in the Cerrado. <em>Global Ecology and Biogeography</em>, 28(7), 904–916. <a href="https://doi.org/10.1111/geb.12901" target="_blank">DOI</a></li>
+        <li data-year="2018"><span class="pub-year">2018</span>Vidal Jr, J. de D. (2018). Historical occupation of Brazilian plateaus by Rauvolfia species. <em>Unesp</em>.</li>
+        <li data-year="2018"><span class="pub-year">2018</span>BFG, Filardi, F. L. R., Barros, F. de, Baumgratz, J. F. A., ... (2018). Brazilian Flora 2020: Innovation and collaboration to meet Target 1 of the Global Strategy for Plant Conservation (GSPC). <em>Rodriguésia</em>, 69(04), 1513–1527.</li>
+        <li data-year="2014"><span class="pub-year">2014</span>Messias, P. A., Vidal Jr, J. de D., Koch, I., ... (2014). Host specificity of the mistletoe Phoradendron crassifolium. <em>Acta Botanica Brasilica</em>, 28, 577–582.</li>
+        <li data-year="2014"><span class="pub-year">2014</span>Vidal Junior, J. de D. & others. (2014). Biogeography of the genus Rauvolfia. <em>UFSCar</em>.</li>
+      </ul>
+    </section>
+
+    <section id="tutorials" class="fade-in">
+      <h2>R Tutorials for Biodiversity Informatics</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-map-pin-2-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Collection Map in Nigeria</h3>
+            <p>Interactive visualization of field collections.</p>
+            <a href="https://jdvidal.github.io/INCT_pd/photo_map.html" target="_blank">View map <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-error-warning-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Suspicious Country Coordinates</h3>
+            <p>Identify records with geographic inconsistencies.</p>
+            <a href="https://jdvidal.github.io/INCT_pd/species_Link_paises.html" target="_blank">View tutorial <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-file-copy-2-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Duplicate Herbarium Numbers</h3>
+            <p>Detection of duplicated herbarium materials.</p>
+            <a href="https://jdvidal.github.io/INCT_pd/species_Link_tombo.html" target="_blank">View tutorial <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-leaf-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Species Name Correction (Flora do Brasil 2020)</h3>
+            <p>Taxonomic validation using Flora do Brasil 2020.</p>
+            <a href="https://jdvidal.github.io/INCT_pd/species_Link_nomes_flora.html" target="_blank">View tutorial <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-water-flash-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Ocean Coordinates</h3>
+            <p>Identify records mistakenly located in oceans.</p>
+            <a href="https://jdvidal.github.io/INCT_pd/species_Link_oceano.html" target="_blank">View tutorial <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-bug-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Outliers with CoordinateCleaner</h3>
+            <p>Detect errors with the <code>CoordinateCleaner</code> package.</p>
+            <a href="https://jdvidal.github.io/INCT_pd/species_Link_coordinatecleaner.html" target="_blank">View tutorial <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-earth-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Natural Distribution (POWO)</h3>
+            <p>Obtain species distribution using the POWO database.</p>
+            <a href="https://jdvidal.github.io/INCT_pd/kewr_POWO_search.html" target="_blank">View tutorial <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-plant-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Taxonomy with TNRS</h3>
+            <p>Retrieve names, families, and authors using TNRS.</p>
+            <a href="https://jdvidal.github.io/INCT_pd/TNRS.html" target="_blank">View tutorial <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-map-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>rgbif Query + Simple Map</h3>
+            <p>Submit GBIF queries and generate simple maps.</p>
+            <a href="https://jdvidal.github.io/INCT_pd/Simple_map.html" target="_blank">View tutorial <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="shiny" class="fade-in">
+      <h2>Shiny Applications</h2>
+      <div class="grid">
+		  <div class="card">
+          <div class="card-icon">
+            <i class="ri-hammer-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Sudan Mining collaborative database</h3>
+            <p>Leaflet map with SQL integrated database to map socio-environmental impacts of mining in Africa</p>
+            <a href="https://jdvidal.shinyapps.io/mining_sudan/" target="_blank">Open app <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+		  
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-mind-map"></i>
+          </div>
+          <div class="card-content">
+            <h3>Mental Map for Project Development</h3>
+            <p>Interactive Shiny application for project idea organization.</p>
+            <a href="https://jdvidal.shinyapps.io/map_pp/" target="_blank">Open app <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-book-2-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Interactive Dictionary of Sahelian Plants</h3>
+            <p>Tool for exploring plant names from the Sahel region.</p>
+            <a href="https://jdvidal.shinyapps.io/nigerien_plant_catalogue/" target="_blank">Open app <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">
+            <i class="ri-dashboard-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>GIS Dashboard for Regreening Projects in Nigeria</h3>
+            <p>Geospatial dashboard for monitoring restoration projects.</p>
+            <a href="https://jdvidal.shinyapps.io/Plants_and_Politics_Nigeria_dashboard/" target="_blank">Open app <i class="ri-arrow-right-line"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="fade-in">
+      <h2>Contact</h2>
+      <div class="contact-grid">
+                <div class="contact-card">
+          <div class="contact-icon">
+            <i class="ri-mail-line"></i>
+          </div>
+          <h3>Email Addresses</h3>
+          <p class="contact-info">
+            <a href="mailto:jd.vidal@unesp.br" class="contact-link">jd.vidal@unesp.br</a><br>
+            <a href="mailto:joao_de_deus.vidal_junior@uni-leipzig.de" class="contact-link">joao_de_deus.vidal_junior@uni-leipzig.de</a>
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="ri-graduation-cap-line"></i>
+          </div>
+          <h3>Research Profiles</h3>
+          <p class="contact-info">
+            <a href="https://scholar.google.com/citations?user=PLmmm4QAAAAJ&hl" target="_blank" class="contact-link">Google Scholar</a><br>
+            <a href="https://orcid.org/0000-0002-0420-4102" target="_blank" class="contact-link">ORCID Profile</a>
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="ri-bar-chart-box-line"></i>
+          </div>
+          <h3>Research Metrics</h3>
+          <div class="metrics">
+            <div class="metric">
+              <div class="metric-value">701</div>
+              <div class="metric-label">Citations</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">10</div>
+              <div class="metric-label">h-index</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">25</div>
+              <div class="metric-label">Publications</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <a href="#" class="back-to-top" aria-label="Back to top">
+    <i class="ri-arrow-up-line"></i>
+  </a>
+
+  <footer>
+    <p>© 2025 JD Vidal – Built with HTML and CSS</p>
+  </footer>
+
+  <script>
+  // Carousel functionality
+const carousel = document.querySelector('.carousel');
+const slides = document.querySelectorAll('.carousel-slide');
+const dots = document.querySelectorAll('.carousel-dot');
+const prevBtn = document.querySelector('.carousel-btn.prev');
+const nextBtn = document.querySelector('.carousel-btn.next');
+
+let currentSlide = 0;
+let autoSlideInterval;
+
+function goToSlide(index) {
+  if (index < 0) index = slides.length - 1;
+  if (index >= slides.length) index = 0;
+  
+  carousel.style.transform = `translateX(-${index * 100}%)`;
+  
+  // Update active dot
+  dots.forEach(dot => dot.classList.remove('active'));
+  dots[index].classList.add('active');
+  
+  currentSlide = index;
+}
+
+function nextSlide() {
+  goToSlide(currentSlide + 1);
+}
+
+function prevSlide() {
+  goToSlide(currentSlide - 1);
+}
+
+function startAutoSlide() {
+  autoSlideInterval = setInterval(nextSlide, 5000);
+}
+
+function stopAutoSlide() {
+  clearInterval(autoSlideInterval);
+}
+
+// Event listeners
+prevBtn.addEventListener('click', () => {
+  prevSlide();
+  stopAutoSlide();
+  startAutoSlide();
+});
+
+nextBtn.addEventListener('click', () => {
+  nextSlide();
+  stopAutoSlide();
+  startAutoSlide();
+});
+
+// Dot navigation
+dots.forEach((dot, index) => {
+  dot.addEventListener('click', () => {
+    goToSlide(index);
+    stopAutoSlide();
+    startAutoSlide();
+  });
+});
+
+// Pause auto-slide on hover
+carousel.addEventListener('mouseenter', stopAutoSlide);
+carousel.addEventListener('mouseleave', startAutoSlide);
+
+// Start auto-slide
+startAutoSlide();
+
+    // Back to top button functionality
+    const backToTopButton = document.querySelector('.back-to-top');
+    
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('visible');
+      } else {
+        backToTopButton.classList.remove('visible');
+      }
+    });
+    
+    backToTopButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    // Publication filtering functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const publicationItems = document.querySelectorAll('.publications-list li');
+    
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Add active class to clicked button
+        button.classList.add('active');
+        
+        const filterValue = button.getAttribute('data-filter');
+        
+        // Filter publications
+        publicationItems.forEach(item => {
+          if (filterValue === 'all') {
+            item.style.display = 'block';
+          } else {
+            const year = item.getAttribute('data-year');
+            if (year === filterValue) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          }
+        });
+      });
+    });
+    
+    // Animation on scroll
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in');
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('section').forEach(section => {
+      observer.observe(section);
+    });
+  </script>
+</body>
+
+</html>
+
+
+
